@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-        setContentView(R.layout.home_page)
+        setContentView(R.layout.main_layout)
 
 
 

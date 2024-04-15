@@ -16,10 +16,10 @@ class LoCATorViewModel: ViewModel() {
     val _witnesses: MutableList<Witness> = mutableListOf()
     val _likes:MutableList<String> = mutableListOf()
 
-    var loginListener:LoginListener?=null
+    var activityLoginListener:LoginListener?=null
 
     fun setLoginListener(listener: LoginListener) {
-        loginListener = listener
+        activityLoginListener = listener
     }
 
     fun userLogIn(email:String, pwd:String){
@@ -28,13 +28,13 @@ class LoCATorViewModel: ViewModel() {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(TAG, "signInWithEmail:success")
                 val user = auth.currentUser
-                loginListener?.onLoginSuccess(user)
+                activityLoginListener?.onLoginSuccess(user)
 
 
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "signInWithEmail:failure", task.exception)
-                loginListener?.onLoginFailure(task.exception)
+                activityLoginListener?.onLoginFailure(task.exception)
             }
         }
     }
