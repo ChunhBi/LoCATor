@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.locator.Cat
 import com.android.locator.R
 import com.android.locator.databinding.ListItemCatBinding
 import java.util.UUID
@@ -14,10 +15,11 @@ class CatHolder (
 //    fun bind(cat: Cat, onCatClicked: (crimeId: UUID) -> Unit) {
         fun bind(cat: Cat) {
         binding.listItemCatName.text = cat.name
-        binding.listItemCatInfo.text = cat.info.toString()
+        binding.listItemCatInfo.text = cat.campus.toString()
 //        binding.root.setOnClickListener {
 //            onCrimeClicked(crime.id)
 //        }
+    // test use
         binding.listItemCatImg.setImageResource(R.drawable.ic_notifications_black_24dp)
     }
 }
