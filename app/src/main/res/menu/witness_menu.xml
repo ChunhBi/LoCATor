@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home_2_list"
+        android:id="@+id/witness_2_list"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/list" />
 
     <item
-        android:id="@+id/home_witness"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:id="@+id/witness_add_witness"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/witness" />
 
     <item
-        android:id="@+id/home_2_not"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/notifications" />
+        android:id="@+id/witness_2_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home" />
 
 </menu>

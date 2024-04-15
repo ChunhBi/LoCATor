@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.locator.R
-import com.android.locator.databinding.FragmentHomeBarBinding
-import com.android.locator.home.HomeFragmentDirections
+import com.android.locator.databinding.FragmentWitnessBarBinding
 
-class HomeBar : Fragment() {
-    private var _binding: FragmentHomeBarBinding?=null
+class WitnessBar : Fragment() {
+    private var _binding: FragmentWitnessBarBinding?=null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -22,35 +20,33 @@ class HomeBar : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBarBinding.inflate(inflater, container, false)
+        _binding = FragmentWitnessBarBinding.inflate(inflater, container, false)
+        binding.apply {
+
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.apply {
-            homeNavBar.setOnItemSelectedListener { item ->
+            witnessNavBar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.home_2_list -> {
+                    R.id.witness_2_list -> {
                         // Handle Home button click
                         navController.navigate(
-                            HomeBarDirections.actionHomeToList()
+                            WitnessBarDirections.actionWitnessToList()
                         )
-//                        supportFragmentManager.findFragmentById
-//                        findNavController(R.id.page_container)
-//                            .navigate(
-//                            HomeFragmentDirections.actionNavigationHomeToCatList()
-//                        )
                         true
                     }
-                    R.id.home_witness -> {
+                    R.id.witness_add_witness -> {
                         // Handle Profile button click
                         true
                     }
-                    R.id.home_2_not -> {
+                    R.id.witness_2_home -> {
                         // Handle Profile button click
                         navController.navigate(
-                            HomeBarDirections.actionHomeToWitness()
+                            WitnessBarDirections.actionWitnessToHome()
                         )
                         true
                     }

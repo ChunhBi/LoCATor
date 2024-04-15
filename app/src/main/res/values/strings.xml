@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">LoCATor</string>
     <string name="cloud_styling_basic_map_id">26a66b031807a453</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="home">Home</string>
+    <string name="add_cat">Add Cat</string>
+    <string name="notifications">Notifications</string>
     <string name="all_cats">All Cats</string>
+    <string name="witness">Witness</string>
+    <string name="list">List</string>
 </resources>
