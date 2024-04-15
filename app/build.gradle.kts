@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,6 +10,7 @@ plugins {
 android {
     namespace = "com.android.locator"
     compileSdk = 34
+
 
     defaultConfig {
         applicationId = "com.android.locator"

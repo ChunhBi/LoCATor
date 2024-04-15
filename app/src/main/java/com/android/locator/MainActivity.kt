@@ -7,66 +7,92 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity() {
+interface LoginListener{
+    fun onLoginSuccess(user: FirebaseUser?)
+    fun onLoginFailure(exception: Exception?)
+}
+
+interface LoginFragmentListener{
+    fun userLogin(email:String, pwd:String)
+}
+class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
     val TAG="MAIN"
-    private lateinit var auth: FirebaseAuth
-    private val db=DatabaseImpl()
+    private val viewModel: LoCATorViewModel by viewModels()
+    //val auth=FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-        setContentView(R.layout.home)
-        auth=FirebaseAuth.getInstance()
+        setContentView(R.layout.main_layout)
 
-        auth.signInWithEmailAndPassword("ydhe@bu.edu", "12345678").addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "signInWithEmail:success")
-                val user = auth.currentUser
-
-                showInfo(user)
+        val loginFragment = LoginFragment()
+        loginFragment.setLoginFragmentListener(this)
+        setFragmentToContainer(loginFragment)
 
 
-            } else {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "signInWithEmail:failure", task.exception)
-                Toast.makeText(
-                    baseContext,
-                    "Authentication failed.",
-                    Toast.LENGTH_SHORT,
-                ).show()
 
-            }
-        }
 
-        lifecycleScope.launch {
-            try{
-                db.fetchCatsFromFirestore()
-                db.fetchWitsFromFirestore()
-                db.fetchLikesFromFirestore(auth.currentUser)
-                val cats=db.getAllCats()
-                val wits=db.getAllWits()
-                val likes=db.getLikes()
+        /*
+                //auth=FirebaseAuth.getInstance()
 
-                cats.forEach { cat->
-                    Log.d(TAG,cat.toString())
+                viewModel.setLoginListener(this)
+
+                auth.signInWithEmailAndPassword("ydhe@bu.edu", "12345678").addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success")
+                        val user = auth.currentUser
+
+                        showInfo(user)
+
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            baseContext,
+                            "Authentication failed.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+
+                    }
                 }
-                wits.forEach { wit->
-                    Log.d(TAG,wit.toString())
-                }
-                likes.forEach { like->
-                    Log.d(TAG,like)
-                }
-            }catch (e:Exception){
 
-            }
 
-        }
+                lifecycleScope.launch {
+                    try{
+                        db.fetchCatsFromFirestore()
+                        db.fetchWitsFromFirestore()
+                        db.fetchLikesFromFirestore(auth.currentUser)
+                        val cats=db.getAllCats()
+                        val wits=db.getAllWits()
+                        val likes=db.getLikes()
+
+                        cats.forEach { cat->
+                            Log.d(TAG,cat.toString())
+                        }
+                        wits.forEach { wit->
+                            Log.d(TAG,wit.toString())
+                        }
+                        likes.forEach { like->
+                            Log.d(TAG,like)
+                        }
+                    }catch (e:Exception){
+
+                    }
+
+                }
+
+                 */
 
 
 
@@ -93,5 +119,35 @@ class MainActivity : AppCompatActivity() {
         mapIntent.resolveActivity(packageManager)?.let {
             startActivity(mapIntent)
         }
+    }
+
+    override fun onLoginSuccess(user:FirebaseUser?) {
+        showInfo(user)
+        Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
+        val homeFragment=HomeFragment()
+        setFragmentToContainer(homeFragment)
+    }
+
+    override fun onLoginFailure(exception: Exception?) {
+        Log.d(TAG, "Login Error: ${exception.toString()}")
+        Toast.makeText(this,exception.toString(),Toast.LENGTH_SHORT).show()
+    }
+
+    override fun userLogin(email: String, pwd: String) {
+        viewModel.userLogIn(email,pwd)
+    }
+
+    private fun setFragmentToContainer(fragment: Fragment) {
+        // Get the FragmentManager
+        val fragmentManager: FragmentManager = supportFragmentManager
+
+        // Begin a transaction
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Replace the fragment container with the desired fragment
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment)
+
+        // Commit the transaction
+        fragmentTransaction.commit()
     }
 }
