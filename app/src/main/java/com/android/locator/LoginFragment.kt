@@ -20,8 +20,20 @@ class LoginFragment:Fragment() {
         // Inflate the layout using the binding class
         binding = LoginFragLayoutBinding.inflate(inflater, container, false)
 
+
         // Return the root view of the inflated layout
         return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.loginButton?.setOnClickListener {
+            loginFragmentListener?.userLogin("ydhe@bu.edu","12345678")
+        }
+    }
+
+    fun setLoginFragmentListener(listener:LoginFragmentListener?){
+        loginFragmentListener=listener
     }
 
     override fun onDestroyView() {
