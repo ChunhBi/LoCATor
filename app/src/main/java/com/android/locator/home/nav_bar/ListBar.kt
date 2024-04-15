@@ -28,13 +28,14 @@ class ListBar : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navController = findNavController()
         binding.apply {
             listNavBar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.list_2_home -> {
                         // Handle Home button click
-                        findNavController().navigate(
-                            ListBarDirections.actionListBarToHomeBar()
+                        navController.navigate(
+                            ListBarDirections.actionListToHome()
                         )
                         true
                     }
@@ -42,8 +43,11 @@ class ListBar : Fragment() {
                         // Handle Profile button click
                         true
                     }
-                    R.id.list_2_not -> {
+                    R.id.list_2_witness -> {
                         // Handle Profile button click
+                        navController.navigate(
+                            ListBarDirections.actionListToWitness()
+                        )
                         true
                     }
                     else -> false

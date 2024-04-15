@@ -10,8 +10,11 @@
         android:label="home_bar"
         tools:layout="@layout/fragment_home_bar">
         <action
-            android:id="@+id/action_home_bar_to_list_bar"
+            android:id="@+id/action_home_to_list"
             app:destination="@id/nav_bar_list" />
+        <action
+            android:id="@+id/action_home_to_witness"
+            app:destination="@id/nav_bar_witness" />
     </fragment>
     <fragment
         android:id="@+id/nav_bar_list"
@@ -19,7 +22,21 @@
         android:label="list_bar"
         tools:layout="@layout/fragment_list_bar">
         <action
-            android:id="@+id/action_list_bar_to_home_bar"
+            android:id="@+id/action_list_to_home"
             app:destination="@id/nav_bar_home" />
+        <action
+            android:id="@+id/action_list_to_witness"
+            app:destination="@id/nav_bar_witness" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_bar_witness"
+        android:name="com.android.locator.home.nav_bar.WitnessBar"
+        android:label="WitnessBar" >
+        <action
+            android:id="@+id/action_witness_to_home"
+            app:destination="@id/nav_bar_home" />
+        <action
+            android:id="@+id/action_witness_to_list"
+            app:destination="@id/nav_bar_list" />
     </fragment>
 </navigation>

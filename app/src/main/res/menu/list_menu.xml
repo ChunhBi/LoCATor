@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/list_2_home"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/title_home" />
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home" />
 
     <item
         android:id="@+id/list_add_cat"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/title_dashboard" />
+        android:title="@string/add_cat" />
 
     <item
-        android:id="@+id/list_2_not"
+        android:id="@+id/list_2_witness"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:title="@string/notifications" />
 
 </menu>

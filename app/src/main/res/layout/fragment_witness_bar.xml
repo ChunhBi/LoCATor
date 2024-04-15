@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/list_nav_bar"
+        android:id="@+id/witness_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -19,6 +19,6 @@
         app:itemRippleColor="@android:color/darker_gray"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/list_menu" />
+        app:menu="@menu/witness_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
