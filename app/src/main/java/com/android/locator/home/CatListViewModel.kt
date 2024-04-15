@@ -2,6 +2,7 @@ package com.android.locator.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.locator.Cat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,9 +20,9 @@ class CatListViewModel : ViewModel() {
 //                _cats.value = it
 //            }
 //        }
-        val cat1 = Cat("Fluffy", "123", "A fluffy tabby.", "https://cat-images.com/fluffy")
-        val cat2 = Cat("Whiskers", "456", "A playful ginger.", "https://cat-images.com/whiskers")
-        val cat3 = Cat("Mittens", "789", "A curious black and white cat.", "https://cat-images.com/mittens")
+        val cat1 = Cat("Fluffy", "123", emptyList(), "https://cat-images.com/fluffy")
+        val cat2 = Cat("Whiskers", "456",  emptyList(), "https://cat-images.com/whiskers")
+        val cat3 = Cat("Mittens", "789",  emptyList(), "https://cat-images.com/mittens")
 
         _cats.value = listOf(cat1, cat2, cat3)
     }

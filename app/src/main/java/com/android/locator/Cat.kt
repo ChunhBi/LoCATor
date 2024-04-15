@@ -5,5 +5,4 @@ data class Cat(
     var name:String,
     var images:List<String>,
     var campus:String,
-
 )

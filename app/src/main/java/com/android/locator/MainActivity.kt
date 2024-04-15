@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-        setContentView(R.layout.home_page)
+        setContentView(R.layout.home)
         auth=FirebaseAuth.getInstance()
 
         auth.signInWithEmailAndPassword("ydhe@bu.edu", "12345678").addOnCompleteListener(this) { task ->
