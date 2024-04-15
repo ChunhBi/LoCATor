@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "368645643837",
+    "firebase_url": "https://crypto-monolith-417321-default-rtdb.firebaseio.com",
+    "project_id": "crypto-monolith-417321",
+    "storage_bucket": "crypto-monolith-417321.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368645643837:android:5d439872b7ea04a1965454",
+        "android_client_info": {
+          "package_name": "com.android.locator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBCjFWoGtTBsiGuKoa_05i0WTyhXdCT0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
