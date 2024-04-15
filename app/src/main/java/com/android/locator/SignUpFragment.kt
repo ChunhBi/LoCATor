@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.android.locator.databinding.LoginFragLayoutBinding
+import com.android.locator.databinding.SignupFragLayoutBinding
 
-class LoginFragment:Fragment() {
-
-    private var binding: LoginFragLayoutBinding? = null
-    private var loginFragmentListener:LoginFragmentListener?=null
+class SignUpFragment:Fragment() {
+    private var binding: SignupFragLayoutBinding? = null
+    private var signupFragmentListener:SignupFragmentListener?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,29 +19,35 @@ class LoginFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout using the binding class
-        binding = LoginFragLayoutBinding.inflate(inflater, container, false)
+        binding = SignupFragLayoutBinding.inflate(inflater, container, false)
 
 
         // Return the root view of the inflated layout
         return binding?.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding!!.loginButton.setOnClickListener {
+        binding!!.signUpButton.setOnClickListener {
             val email=binding!!.emailEditText.text.toString()
             val pwd=binding!!.passwordEditText.text.toString()
+            val pwd2=binding!!.confirmPasswordEditText.text.toString()
+            if(pwd.equals(pwd2)){
+                signupFragmentListener?.userSignup(email,pwd)
+            }
+            else{
+                Toast.makeText(requireContext(),"The passwords you typed do not match",Toast.LENGTH_SHORT).show()
+            }
 
-            loginFragmentListener?.userLogin(email,pwd)
+
         }
-        binding!!.signupButton.setOnClickListener {
-            loginFragmentListener?.gotoSignup()
+        binding!!.loginButton.setOnClickListener {
+            signupFragmentListener?.gotoLogin()
         }
     }
 
-    fun setLoginFragmentListener(listener:LoginFragmentListener?){
-        loginFragmentListener=listener
+    fun setSignupFragmentListener(listener:SignupFragmentListener?){
+        signupFragmentListener=listener
     }
 
     override fun onDestroyView() {

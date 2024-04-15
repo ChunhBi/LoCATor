@@ -4,15 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
 import com.android.locator.home.HomeFragment
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
@@ -23,9 +21,15 @@ interface LoginListener{
 }
 
 interface LoginFragmentListener{
-    fun userLogin(email:String, pwd:String)
+    fun userLogin(email: String, pwd:String)
+    fun gotoSignup()
 }
-class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
+
+interface SignupFragmentListener{
+    fun userSignup(email: String, pwd:String)
+    fun gotoLogin()
+}
+class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener,SignupFragmentListener {
     val TAG="MAIN"
     private val viewModel: LoCATorViewModel by viewModels()
     //val auth=FirebaseAuth.getInstance()
@@ -33,6 +37,8 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         setContentView(R.layout.main_layout)
+
+        viewModel.setLoginListener(this)
 
         val loginFragment = LoginFragment()
         loginFragment.setLoginFragmentListener(this)
@@ -129,13 +135,20 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
     }
 
     override fun onLoginFailure(exception: Exception?) {
-        Log.d(TAG, "Login Error: ${exception.toString()}")
-        Toast.makeText(this,exception.toString(),Toast.LENGTH_SHORT).show()
+        val errorMessage = exception?.message ?: "Unknown error"
+        Log.d(TAG, "Login Error: $errorMessage")
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun userLogin(email: String, pwd: String) {
+        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
+            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
+            return
+        }
         viewModel.userLogIn(email,pwd)
     }
+
+
 
     private fun setFragmentToContainer(fragment: Fragment) {
         // Get the FragmentManager
@@ -149,5 +162,27 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
 
         // Commit the transaction
         fragmentTransaction.commit()
+    }
+
+
+    override fun userSignup(email: String, pwd: String) {
+        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
+            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
+            return
+        }
+        viewModel.userSignUp(email,pwd)
+    }
+
+    override fun gotoLogin() {
+        val loginFragment = LoginFragment()
+        loginFragment.setLoginFragmentListener(this)
+        setFragmentToContainer(loginFragment)
+    }
+
+    override fun gotoSignup() {
+        val signUpFragment = SignUpFragment()
+        signUpFragment.setSignupFragmentListener(this)
+        setFragmentToContainer(signUpFragment)
+
     }
 }

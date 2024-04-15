@@ -13,13 +13,29 @@ class LoCATorViewModel: ViewModel() {
     val auth=FirebaseAuth.getInstance()
 
     val cats: MutableList<Cat> = mutableListOf()
-    val _witnesses: MutableList<Witness> = mutableListOf()
-    val _likes:MutableList<String> = mutableListOf()
+    val witnesses: MutableList<Witness> = mutableListOf()
+    val likes:MutableList<String> = mutableListOf()
 
     var activityLoginListener:LoginListener?=null
 
     fun setLoginListener(listener: LoginListener) {
         activityLoginListener = listener
+    }
+
+    suspend fun initAllDbData(){
+        db.fetchWitsFromFirestore()
+        db.fetchCatsFromFirestore()
+        db.fetchLikesFromFirestore(auth.currentUser)
+
+        cats.clear()
+        cats.addAll(db.getAllCats())
+
+        witnesses.clear()
+        witnesses.addAll(db.getAllWits())
+
+        likes.clear()
+        likes.addAll(db.getLikes())
+
     }
 
     fun userLogIn(email:String, pwd:String){
@@ -29,6 +45,29 @@ class LoCATorViewModel: ViewModel() {
                 Log.d(TAG, "signInWithEmail:success")
                 val user = auth.currentUser
                 activityLoginListener?.onLoginSuccess(user)
+                viewModelScope.launch {
+                    initAllDbData()
+                }
+
+
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.w(TAG, "signInWithEmail:failure", task.exception)
+                activityLoginListener?.onLoginFailure(task.exception)
+            }
+        }
+    }
+
+    fun userSignUp(email: String, pwd: String) {
+        auth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d(TAG, "signInWithEmail:success")
+                val user = auth.currentUser
+                activityLoginListener?.onLoginSuccess(user)
+                viewModelScope.launch {
+                    initAllDbData()
+                }
 
 
             } else {
