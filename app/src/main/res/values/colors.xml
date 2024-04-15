@@ -7,4 +7,5 @@
     <color name="almostBlack">#222</color>
     <color name="red">#F00</color>
     <color name="orange">#FF8c00</color>
+    <color name="light_orange">#FFD580</color>
 </resources>
