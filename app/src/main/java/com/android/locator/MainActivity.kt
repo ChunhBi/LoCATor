@@ -7,21 +7,36 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity() {
+interface LoginListener{
+    fun onLoginSuccess(user: FirebaseUser?)
+    fun onLoginFailure(exception: Exception?)
+}
+
+interface LoginFragmentListener{
+    fun userLogin(email:String, pwd:String)
+}
+class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener {
     val TAG="MAIN"
-    private lateinit var auth: FirebaseAuth
-    private val db=DatabaseImpl()
+    private val viewModel: LoCATorViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         setContentView(R.layout.home_page)
+
+
+
+
+        /*
         auth=FirebaseAuth.getInstance()
+
+        viewModel.setLoginListener(this)
 
         auth.signInWithEmailAndPassword("ydhe@bu.edu", "12345678").addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
@@ -68,6 +83,8 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+         */
+
 
 
 
@@ -93,5 +110,20 @@ class MainActivity : AppCompatActivity() {
         mapIntent.resolveActivity(packageManager)?.let {
             startActivity(mapIntent)
         }
+    }
+
+    override fun onLoginSuccess(user:FirebaseUser?) {
+        showInfo(user)
+        Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
+        //TODO: go to homepage fragment
+    }
+
+    override fun onLoginFailure(exception: Exception?) {
+        Log.d(TAG, "Login Error: ${exception.toString()}")
+        Toast.makeText(this,exception.toString(),Toast.LENGTH_SHORT).show()
+    }
+
+    override fun userLogin(email: String, pwd: String) {
+        viewModel.userLogIn(email,pwd)
     }
 }
