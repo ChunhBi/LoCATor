@@ -9,6 +9,7 @@ import com.android.locator.exeption.CatIdDoesntExist
 import com.android.locator.exeption.DuplicatedNameInSameCampus
 import com.android.locator.exeption.UserIsNull
 import com.android.locator.exeption.WitIdDoesntExist
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -140,6 +141,20 @@ class DatabaseImpl {
     suspend fun getLikes():MutableList<String>{
         return _likes
     }
+    private fun getTimeFromWitData(witData: Map<String, Any>): Date {
+        val timeField = witData["time"]
+        return when (timeField) {
+            is Timestamp -> {
+                timeField.toDate()
+            }
+            is Date -> {
+                timeField
+            }
+            else -> {
+                Date()
+            }
+        }
+    }
 
     suspend fun fetchWitsFromFirestore() {
 
@@ -151,7 +166,7 @@ class DatabaseImpl {
             val cleanCatId = witData["cat"] as? String?:"Unknown"
 
             val position = witData["position"] as? GeoPoint?: GeoPoint(0.0,0.0)
-            var time = witData["time"] as? Date ?: Date()
+            var time = getTimeFromWitData(witData)
             Witness(id,cleanCatId,position,time)
         }
         _witnesses.addAll(fetchedWits.toMutableList())

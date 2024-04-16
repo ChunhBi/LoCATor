@@ -33,7 +33,7 @@ class LoginFragment:Fragment() {
             var email=binding!!.emailEditText.text.toString()
             var pwd=binding!!.passwordEditText.text.toString()
 
-            if(true){
+            if(false){
                 email="ydhe@bu.edu"
                 pwd="12345678"
             }
