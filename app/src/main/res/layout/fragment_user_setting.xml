@@ -57,6 +57,7 @@
         android:padding="0dp"
         android:shadowColor="@color/almostBlack"
         android:text="U"
+
         android:textColor="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

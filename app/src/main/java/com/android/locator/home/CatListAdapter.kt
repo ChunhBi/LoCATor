@@ -19,7 +19,7 @@ class CatHolder (
             onCatClicked(cat.id)
         }
     // test use
-        binding.listItemCatImg.setImageResource(R.drawable.ic_notifications_black_24dp)
+//        binding.listItemCatImg.setImageResource(R.drawable.ic_notifications_black_24dp)
     }
 }
 
