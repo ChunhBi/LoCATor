@@ -16,10 +16,10 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.835"
+        app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/nav_page" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -37,17 +37,17 @@
         app:navGraph="@navigation/nav_bar"
         tools:layout="@layout/fragment_home_bar"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/button"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginStart="32dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:padding="0dp"-->
-<!--        android:text="O"-->
-<!--        android:background="@drawable/btn_circled"-->
-<!--        android:backgroundTint="@color/grey"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <Button
+        android:id="@+id/button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:padding="0dp"
+        android:text="U"
+        android:background="@drawable/btn_circled"
+        android:shadowColor="@color/almostBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@
         app:itemTextColor="#353535"
         app:itemRippleColor="@android:color/darker_gray"
         app:labelVisibilityMode="unlabeled"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/home_menu" />
 
