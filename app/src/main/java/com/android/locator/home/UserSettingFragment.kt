@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.android.locator.LoCATorRepo
 import com.android.locator.databinding.FragmentUserSettingBinding
 
 class UserSettingFragment: Fragment() {
     private var _binding: FragmentUserSettingBinding? = null
+    private val repo=LoCATorRepo.getInstance()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -32,6 +34,9 @@ class UserSettingFragment: Fragment() {
                 navController.navigate(
                     UserSettingFragmentDirections.actionUserSetting2Home()
                 )
+            }
+            settingLogOutBtn.setOnClickListener{
+                repo.userLogOut()
             }
         }
     }

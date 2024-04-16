@@ -108,4 +108,12 @@ class LoCATorRepo private constructor() {
         }
     }
 
+    fun userLogOut() {
+        auth.signOut()
+        cats.clear()
+        witnesses.clear()
+        likes.clear()
+        activityListener?.logOut()
+    }
+
 }

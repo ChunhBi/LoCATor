@@ -20,6 +20,8 @@ interface MainActivityListener{
     fun onLoginSuccess(user: FirebaseUser?)
     fun onLoginFailure(exception: Exception?)
     fun makeToast(m:String)
+
+    fun logOut()
 }
 
 
@@ -145,6 +147,12 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         Toast.makeText(this,m,Toast.LENGTH_SHORT).show()
     }
 
+    override fun logOut() {
+        val loginFragment = LoginFragment()
+        loginFragment.setLoginFragmentListener(this)
+        setFragmentToContainer(loginFragment)
+    }
+
 //    override fun userLogin(email: String, pwd: String) {
 //        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
 //            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
@@ -168,6 +176,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         // Commit the transaction
         fragmentTransaction.commit()
     }
+
 
 
 //    override fun userSignup(email: String, pwd: String) {
