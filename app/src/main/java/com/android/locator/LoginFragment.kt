@@ -11,6 +11,7 @@ class LoginFragment:Fragment() {
 
     private var binding: LoginFragLayoutBinding? = null
     private var loginFragmentListener:LoginFragmentListener?=null
+    val repo=LoCATorRepo.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,7 @@ class LoginFragment:Fragment() {
             val email=binding!!.emailEditText.text.toString()
             val pwd=binding!!.passwordEditText.text.toString()
 
-            loginFragmentListener?.userLogin(email,pwd)
+            repo?.userLogIn(email,pwd)
         }
         binding!!.signupButton.setOnClickListener {
             loginFragmentListener?.gotoSignup()

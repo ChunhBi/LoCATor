@@ -4,41 +4,47 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.launch
 
 
-interface LoginListener{
+
+//这个接口用于把Mainactivity注册给LoCATorRepo,
+//因为repo里的一些功能需要把结果或信息返回给Mainactivity
+interface MainActivityListener{
     fun onLoginSuccess(user: FirebaseUser?)
     fun onLoginFailure(exception: Exception?)
+    fun makeToast(m:String)
 }
 
+
+//这两个接口把MainActivity注册给Login fragment 和Sign up fragment
+//目前用于login和signup的切换
+//如果改用Navigation graph的话就不需要了
 interface LoginFragmentListener{
-    fun userLogin(email: String, pwd:String)
+    //fun userLogin(email: String, pwd:String)
     fun gotoSignup()
 }
-
 interface SignupFragmentListener{
-    fun userSignup(email: String, pwd:String)
+    //fun userSignup(email: String, pwd:String)
     fun gotoLogin()
 }
-class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener,SignupFragmentListener {
+
+
+class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListener,SignupFragmentListener {
     val TAG="MAIN"
-    private val viewModel: LoCATorViewModel by viewModels()
+    private val repo: LoCATorRepo=LoCATorRepo.getInstance()
     //val auth=FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
+
         setContentView(R.layout.main_layout)
 
-        viewModel.setLoginListener(this)
+        repo.setLoginListener(this)
 
         val loginFragment = LoginFragment()
         loginFragment.setLoginFragmentListener(this)
@@ -119,13 +125,7 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener,Sig
             Log.d(TAG,"User is null.")
         }
     }
-    fun openLocation(latitude: Double, longitude: Double) {
-        val geoUri = Uri.parse("geo:$latitude,$longitude")
-        val mapIntent = Intent(Intent.ACTION_VIEW, geoUri)
-        mapIntent.resolveActivity(packageManager)?.let {
-            startActivity(mapIntent)
-        }
-    }
+
 
     override fun onLoginSuccess(user:FirebaseUser?) {
         showInfo(user)
@@ -140,13 +140,17 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener,Sig
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    override fun userLogin(email: String, pwd: String) {
-        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
-            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
-            return
-        }
-        viewModel.userLogIn(email,pwd)
+    override fun makeToast(m: String) {
+        Toast.makeText(this,m,Toast.LENGTH_SHORT).show()
     }
+
+//    override fun userLogin(email: String, pwd: String) {
+//        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
+//            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//        viewModel.userLogIn(email,pwd)
+//    }
 
 
 
@@ -165,13 +169,13 @@ class MainActivity : AppCompatActivity(),LoginListener,LoginFragmentListener,Sig
     }
 
 
-    override fun userSignup(email: String, pwd: String) {
-        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
-            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
-            return
-        }
-        viewModel.userSignUp(email,pwd)
-    }
+//    override fun userSignup(email: String, pwd: String) {
+//        if(email==null||pwd==null||email.equals("")||pwd.equals("")){
+//            Toast.makeText(this,"Email or password cannot be empty!",Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//        viewModel.userSignUp(email,pwd)
+//    }
 
     override fun gotoLogin() {
         val loginFragment = LoginFragment()

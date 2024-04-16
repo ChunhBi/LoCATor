@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.android.locator.databinding.LoginFragLayoutBinding
 import com.android.locator.databinding.SignupFragLayoutBinding
 
 class SignUpFragment:Fragment() {
     private var binding: SignupFragLayoutBinding? = null
     private var signupFragmentListener:SignupFragmentListener?=null
+    val repo=LoCATorRepo.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +33,7 @@ class SignUpFragment:Fragment() {
             val pwd=binding!!.passwordEditText.text.toString()
             val pwd2=binding!!.confirmPasswordEditText.text.toString()
             if(pwd.equals(pwd2)){
-                signupFragmentListener?.userSignup(email,pwd)
+                repo?.userSignUp(email,pwd)
             }
             else{
                 Toast.makeText(requireContext(),"The passwords you typed do not match",Toast.LENGTH_SHORT).show()
