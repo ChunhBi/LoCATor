@@ -4,7 +4,10 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/grey</item>
+        <item name="android:textColor">@color/orange</item>
         <item name="windowNoTitle">true</item>
+<!--        <item name="colorButtonNormal">@color/orange</item>-->
+<!--        <item name="android:colorButtonNormal">@color/orange</item>-->
     </style>
 
     <style name="Theme.LoCATor" parent="Base.Theme.LoCATor" />

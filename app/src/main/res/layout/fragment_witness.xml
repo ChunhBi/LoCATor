@@ -16,6 +16,7 @@
         android:text="@string/notifications"
         android:textAlignment="center"
         android:textSize="30dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/witness_list_title"
-        tools:listitem="@layout/list_item_cat" />
+        tools:listitem="@layout/list_item_witness" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/witness_nav_bar"

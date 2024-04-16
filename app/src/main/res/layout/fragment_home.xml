@@ -31,6 +31,7 @@
         android:layout_marginTop="32dp"
         android:padding="0dp"
         android:text="U"
+        android:textColor="@color/orange"
         android:background="@drawable/btn_circled"
         android:shadowColor="@color/almostBlack"
         app:layout_constraintStart_toStartOf="parent"
