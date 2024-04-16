@@ -1,5 +1,6 @@
 package com.android.locator
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +42,7 @@ class LoCATorRepo private constructor() {
 
         witnesses.clear()
         witnesses.addAll(db.getAllWits())
+        Log.d(TAG,"init: size of wits: ${witnesses.size}")
 
         likes.clear()
         likes.addAll(db.getLikes())
@@ -57,7 +59,7 @@ class LoCATorRepo private constructor() {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(TAG, "signInWithEmail:success")
                 val user = auth.currentUser
-                activityListener?.onLoginSuccess(user)
+
                 CoroutineScope(Dispatchers.Main).launch {
                     // Call the suspend function initAllDbData() here
                     try {
@@ -66,6 +68,7 @@ class LoCATorRepo private constructor() {
                         // Handle any exception that may occur during the database initialization
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
+                    activityListener?.onLoginSuccess(user)
                 }
 
 
@@ -87,7 +90,7 @@ class LoCATorRepo private constructor() {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(TAG, "signInWithEmail:success")
                 val user = auth.currentUser
-                activityListener?.onLoginSuccess(user)
+
                 CoroutineScope(Dispatchers.Main).launch {
                     // Call the suspend function initAllDbData() here
                     try {
@@ -96,6 +99,7 @@ class LoCATorRepo private constructor() {
                         // Handle any exception that may occur during the database initialization
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
+                    activityListener?.onLoginSuccess(user)
                 }
 
 
@@ -114,6 +118,15 @@ class LoCATorRepo private constructor() {
         witnesses.clear()
         likes.clear()
         activityListener?.logOut()
+    }
+
+    suspend fun getWitBitMap(witId:String):Bitmap{
+        return db.getWitImgBitmap(witId)
+    }
+
+    fun getWits():List<Witness>{
+        Log.d(TAG,"${witnesses.size}")
+        return witnesses
     }
 
 }

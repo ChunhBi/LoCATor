@@ -78,4 +78,6 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.firebaseui:firebase-ui-storage:7.2.0")
 
+    implementation ("androidx.core:core-ktx:1.12.0")
+
 }

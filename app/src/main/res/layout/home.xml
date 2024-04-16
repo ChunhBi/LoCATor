@@ -8,7 +8,7 @@
 
 <!--    Fragment is different from FragmentContainerView!  -->
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/myMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/nav_page" />
+
 
 <!--    <androidx.fragment.app.FragmentContainerView-->
 <!--        android:id="@+id/bar_container"-->
