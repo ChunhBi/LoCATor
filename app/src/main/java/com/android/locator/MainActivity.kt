@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.android.locator.home.Home
 import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
 
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
     override fun onLoginSuccess(user:FirebaseUser?) {
         showInfo(user)
         Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
-        val homeFragment=HomeFragment()
+        val homeFragment=Home()
         setFragmentToContainer(homeFragment)
     }
 
