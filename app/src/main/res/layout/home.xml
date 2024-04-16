@@ -7,6 +7,15 @@
     android:layout_height="match_parent">
 
 <!--    Fragment is different from FragmentContainerView!  -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/page_container"
@@ -22,32 +31,19 @@
         app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/nav_page" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/bar_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="32dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:navGraph="@navigation/nav_bar"
-        tools:layout="@layout/fragment_home_bar"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:padding="0dp"
-        android:text="U"
-        android:background="@drawable/btn_circled"
-        android:shadowColor="@color/almostBlack"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/bar_container"-->
+<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="64dp"-->
+<!--        android:layout_marginBottom="32dp"-->
+<!--        app:defaultNavHost="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="parent"-->
+<!--        app:navGraph="@navigation/nav_bar"-->
+<!--        tools:layout="@layout/fragment_home_bar"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

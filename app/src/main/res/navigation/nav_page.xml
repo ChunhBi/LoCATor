@@ -11,8 +11,11 @@
         android:label="@string/home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_catList"
+            android:id="@+id/action_home_2_catList"
             app:destination="@id/nav_page_catList" />
+        <action
+            android:id="@+id/action_page_home_2_witnessList"
+            app:destination="@id/witnessList" />
     </fragment>
     <fragment
         android:id="@+id/nav_page_catList"
@@ -20,8 +23,22 @@
         android:label="CatList"
         tools:layout="@layout/fragment_list">
         <action
-            android:id="@+id/action_nav_catList_to_nav_home"
+            android:id="@+id/action_catList_2_home"
             app:destination="@id/nav_page_home" />
+        <action
+            android:id="@+id/action_catList_2_witnessList"
+            app:destination="@id/witnessList" />
+    </fragment>
+    <fragment
+        android:id="@+id/witnessList"
+        android:name="com.android.locator.home.WitnessList"
+        android:label="WitnessList" >
+        <action
+            android:id="@+id/action_witnessList_2_home"
+            app:destination="@id/nav_page_home" />
+        <action
+            android:id="@+id/action_witnessList_2_catList"
+            app:destination="@id/nav_page_catList" />
     </fragment>
 
 </navigation>

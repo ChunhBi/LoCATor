@@ -7,21 +7,21 @@
     android:layout_height="match_parent"
     tools:background="@color/almostBlack">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/witness_nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="30dp"
-        android:background="@drawable/bar_rounded"
-        app:elevation="4dp"
-        app:itemIconSize="30dp"
-        app:itemIconTint="#353535"
-        app:itemTextColor="#353535"
-        app:itemRippleColor="@android:color/darker_gray"
-        app:labelVisibilityMode="unlabeled"
-        app:itemActiveIndicatorStyle="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/witness_menu" />
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/witness_nav_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_margin="30dp"-->
+<!--        android:background="@drawable/bar_rounded"-->
+<!--        app:elevation="4dp"-->
+<!--        app:itemIconSize="30dp"-->
+<!--        app:itemIconTint="#353535"-->
+<!--        app:itemTextColor="#353535"-->
+<!--        app:itemRippleColor="@android:color/darker_gray"-->
+<!--        app:labelVisibilityMode="unlabeled"-->
+<!--        app:itemActiveIndicatorStyle="@android:color/transparent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:menu="@menu/witness_menu" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

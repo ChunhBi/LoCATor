@@ -4,17 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeFragment"
-    android:background="@color/grey">
+    tools:background="@color/almostBlack">
 
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/home_nav_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="30dp"
+        android:background="@drawable/bar_rounded"
+        app:elevation="4dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="#353535"
+        app:itemTextColor="#353535"
+        app:itemRippleColor="@android:color/darker_gray"
+        app:labelVisibilityMode="unlabeled"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/home_menu" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:padding="0dp"
+        android:text="U"
+        android:background="@drawable/btn_circled"
+        android:shadowColor="@color/almostBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

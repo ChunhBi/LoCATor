@@ -21,6 +21,12 @@
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/orange"/>
 
+<!--    <include-->
+<!--        layout="@layout/fragment_list_bar"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cats_recycler_view"
         android:layout_width="0dp"
@@ -28,10 +34,30 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/list_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/all_cats_title"
         tools:listitem="@layout/list_item_cat" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/list_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="30dp"
+        android:background="@drawable/bar_rounded"
+        app:elevation="4dp"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemIconSize="30dp"
+        app:itemIconTint="#353535"
+        app:itemRippleColor="@android:color/darker_gray"
+        app:itemTextColor="#353535"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/list_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

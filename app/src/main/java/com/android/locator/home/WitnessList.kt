@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.locator.R
 import com.android.locator.databinding.FragmentWitnessBinding
 import kotlinx.coroutines.launch
 
@@ -32,7 +34,33 @@ class WitnessList:Fragment() {
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
+        binding.apply {
+            witnessNavBar.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.witness_2_list -> {
+                        // Handle Home button click
+                        navController.navigate(
+                            WitnessListDirections.actionWitnessList2CatList()
+                        )
+                        true
+                    }
+                    R.id.witness_add_witness -> {
+                        // Handle Profile button click
+                        true
+                    }
+                    R.id.witness_2_home -> {
+                        // Handle Profile button click
+                        navController.navigate(
+                            WitnessListDirections.actionWitnessList2Home()
+                        )
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 witnessListViewModel.witnesses.collect {witnesses ->
