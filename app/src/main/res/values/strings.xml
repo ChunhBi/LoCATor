@@ -7,4 +7,8 @@
     <string name="all_cats">All Cats</string>
     <string name="witness">Witness</string>
     <string name="list">List</string>
+    <string name="locator">LoCATor</string>
+    <string name="log_out">Log Out</string>
+    <string name="change_password">Change Password</string>
+    <string name="liked_cats">Liked Cats</string>
 </resources>
