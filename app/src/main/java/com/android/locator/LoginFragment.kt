@@ -30,8 +30,13 @@ class LoginFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding!!.loginButton.setOnClickListener {
-            val email=binding!!.emailEditText.text.toString()
-            val pwd=binding!!.passwordEditText.text.toString()
+            var email=binding!!.emailEditText.text.toString()
+            var pwd=binding!!.passwordEditText.text.toString()
+
+            if(true){
+                email="ydhe@bu.edu"
+                pwd="12345678"
+            }
 
             repo?.userLogIn(email,pwd)
         }
