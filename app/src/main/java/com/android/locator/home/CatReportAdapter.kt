@@ -14,7 +14,7 @@ class CatReportHolder (
 //    fun bind(cat: Cat, onCatClicked: (crimeId: UUID) -> Unit) {
     fun bind(cat: Cat) {
     // test use
-        binding.catWitnessImg.setImageResource(R.drawable.ic_notifications_black_24dp)
+//        binding.catWitnessImg.setImageResource(R.drawable.ic_notifications_black_24dp)
     }
 }
 

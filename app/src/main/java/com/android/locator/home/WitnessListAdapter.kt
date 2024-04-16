@@ -18,7 +18,7 @@ class WitnessHolder (
 //            onCrimeClicked(crime.id)
 //        }
     // test use
-        binding.listItemWitnessImg.setImageResource(R.drawable.ic_notifications_black_24dp)
+//        binding.listItemWitnessImg.setImageResource(R.drawable.ic_notifications_black_24dp)
     }
 }
 

@@ -76,6 +76,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     override fun onMapReady(p0: GoogleMap) {
         // Bind the GoogleMap instance
         map = p0
+        map?.mapType = GoogleMap.MAP_TYPE_TERRAIN
         // Add markers to the map or perform other map operations
 
         lifecycleScope.launch{
