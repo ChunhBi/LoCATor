@@ -24,9 +24,9 @@
         app:menu="@menu/home_menu" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:id="@+id/home_user_btn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:padding="0dp"

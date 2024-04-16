@@ -9,51 +9,50 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.locator.R
-import com.android.locator.databinding.FragmentListBinding
+import com.android.locator.databinding.FragmentWitnessBinding
 import kotlinx.coroutines.launch
 
-class CatList:Fragment() {
-    private var _binding: FragmentListBinding?=null
+class WitnessListFragment:Fragment() {
+    private var _binding: FragmentWitnessBinding?=null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    private val catListViewModel: CatListViewModel by viewModels()
+    private val witnessListViewModel: WitnessListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentListBinding.inflate(inflater, container, false)
-        binding.catsRecyclerView.layoutManager = LinearLayoutManager(context)
+        _binding = FragmentWitnessBinding.inflate(inflater, container, false)
+        binding.witnessRecyclerView.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.apply {
-            listNavBar.setOnItemSelectedListener { item ->
+            witnessNavBar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.list_2_home -> {
+                    R.id.witness_2_list -> {
                         // Handle Home button click
                         navController.navigate(
-                            CatListDirections.actionCatList2Home()
+                            WitnessListFragmentDirections.actionWitnessList2CatList()
                         )
                         true
                     }
-                    R.id.list_add_cat -> {
+                    R.id.witness_add_witness -> {
                         // Handle Profile button click
                         true
                     }
-                    R.id.list_2_witness -> {
+                    R.id.witness_2_home -> {
                         // Handle Profile button click
                         navController.navigate(
-                            CatListDirections.actionCatList2WitnessList()
+                            WitnessListFragmentDirections.actionWitnessList2Home()
                         )
                         true
                     }
@@ -64,8 +63,8 @@ class CatList:Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                catListViewModel.cats.collect {cats ->
-                    binding.catsRecyclerView.adapter = CatListAdapter(cats)
+                witnessListViewModel.witnesses.collect {witnesses ->
+                    binding.witnessRecyclerView.adapter = WitnessListAdapter(witnesses)
                 }
             }
         }

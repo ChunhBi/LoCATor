@@ -11,4 +11,6 @@
     <string name="log_out">Log Out</string>
     <string name="change_password">Change Password</string>
     <string name="liked_cats">Liked Cats</string>
+    <string name="name_of_cat">Name of Cat:</string>
+    <string name="cat_detail">Cat Detail</string>
 </resources>

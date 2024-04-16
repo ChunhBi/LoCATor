@@ -8,7 +8,7 @@
     >
 
     <Button
-        android:id="@+id/submit_back_btn"
+        android:id="@+id/add_cat_back_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/report_img"
+        android:id="@+id/add_cat_img"
         android:layout_width="269dp"
         android:layout_height="291dp"
         android:layout_marginTop="128dp"
@@ -32,31 +32,32 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/report_submit"
+        android:id="@+id/add_cat_submit"
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:text="Submit"
+        android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cats_recycler_view"
+    <EditText
+        android:id="@+id/editTextText"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/report_submit"
+        android:background="@drawable/bar_rounded"
+        android:ems="10"
+        android:hint="@string/name_of_cat"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/report_img"
-        tools:listitem="@layout/list_item_cat_select" />
+        app:layout_constraintTop_toBottomOf="@+id/add_cat_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

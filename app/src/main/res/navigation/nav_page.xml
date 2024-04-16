@@ -3,42 +3,94 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_page_home">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/nav_page_home"
+        android:id="@+id/homeFragment"
         android:name="com.android.locator.home.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home_2_catList"
-            app:destination="@id/nav_page_catList" />
+            app:destination="@id/catListFragment" />
         <action
             android:id="@+id/action_page_home_2_witnessList"
-            app:destination="@id/witnessList" />
+            app:destination="@id/witnessListFragment" />
+        <action
+            android:id="@+id/action_home_2_userSetting"
+            app:destination="@id/userSettingFragment" />
+        <action
+            android:id="@+id/action_home_2_report"
+            app:destination="@id/reportFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nav_page_catList"
-        android:name="com.android.locator.home.CatList"
+        android:id="@+id/catListFragment"
+        android:name="com.android.locator.home.CatListFragment"
         android:label="CatList"
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_catList_2_home"
-            app:destination="@id/nav_page_home" />
+            app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_catList_2_witnessList"
-            app:destination="@id/witnessList" />
+            app:destination="@id/witnessListFragment" />
+        <action
+            android:id="@+id/action_catList_2_addCat"
+            app:destination="@id/addCatFragment" />
+        <action
+            android:id="@+id/action_catList_2_catInfo"
+            app:destination="@id/catInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/witnessList"
-        android:name="com.android.locator.home.WitnessList"
-        android:label="WitnessList" >
+        android:id="@+id/witnessListFragment"
+        android:name="com.android.locator.home.WitnessListFragment"
+        android:label="WitnessList"
+        tools:layout="@layout/fragment_witness">
         <action
             android:id="@+id/action_witnessList_2_home"
-            app:destination="@id/nav_page_home" />
+            app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_witnessList_2_catList"
-            app:destination="@id/nav_page_catList" />
+            app:destination="@id/catListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSettingFragment"
+        android:name="com.android.locator.home.UserSettingFragment"
+        android:label="UserSetting"
+        tools:layout="@layout/fragment_user_setting">
+        <action
+            android:id="@+id/action_userSetting_2_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.android.locator.home.ReportFragment"
+        android:label="ReportFragment"
+        tools:layout="@layout/fragment_report">
+        <action
+            android:id="@+id/action_report_2_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCatFragment"
+        android:name="com.android.locator.home.AddCatFragment"
+        android:label="AddCatFragment"
+        tools:layout="@layout/fragment_add_cat">
+        <action
+            android:id="@+id/action_addCat_2_catList"
+            app:destination="@id/catListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/catInfoFragment"
+        android:name="com.android.locator.home.CatInfoFragment"
+        android:label="CatInfoFragment"
+        tools:layout="@layout/fragment_cat_info">
+        <action
+            android:id="@+id/action_catInfo_2_catList"
+            app:destination="@id/catListFragment" />
+        <argument
+            android:name="catId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

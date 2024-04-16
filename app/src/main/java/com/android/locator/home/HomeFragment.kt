@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.android.locator.R
 import com.android.locator.databinding.FragmentHomeBinding
@@ -32,6 +30,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.apply {
+            homeUserBtn.setOnClickListener {
+//                parentFragmentManager.beginTransaction()
+//                    .replace(R.id.page_container, UserSetting())
+//                    .commit()
+                navController.navigate(
+                    HomeFragmentDirections.actionHome2UserSetting()
+                )
+            }
             homeNavBar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.home_2_list -> {
@@ -43,6 +49,9 @@ class HomeFragment : Fragment() {
                     }
                     R.id.home_witness -> {
                         // Handle Profile button click
+                        navController.navigate(
+                            HomeFragmentDirections.actionHome2Report()
+                        )
                         true
                     }
                     R.id.home_2_not -> {

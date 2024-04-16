@@ -20,8 +20,6 @@ class SignUpFragment:Fragment() {
     ): View? {
         // Inflate the layout using the binding class
         binding = SignupFragLayoutBinding.inflate(inflater, container, false)
-
-
         // Return the root view of the inflated layout
         return binding?.root
     }
