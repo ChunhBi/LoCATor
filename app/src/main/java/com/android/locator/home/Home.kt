@@ -118,7 +118,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
         val latLng = geoPointToLatLng(wit.geoPoint)
 
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12F))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
 
         lifecycleScope.launch {
             val catImt: Bitmap? = repo.getWitBitMap(wit.id)

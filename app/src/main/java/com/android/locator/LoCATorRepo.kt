@@ -129,4 +129,12 @@ class LoCATorRepo private constructor() {
         return witnesses
     }
 
+    fun get_Cats(): MutableList<Cat> {
+        return cats
+    }
+
+    suspend fun getCatImg(path:String): Bitmap? {
+        return db.getCatImgBitmap(path)
+    }
+
 }

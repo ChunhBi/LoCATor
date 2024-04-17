@@ -5,16 +5,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.locator.Cat
+import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.databinding.ListItemCatBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class CatHolder (
     val binding: ListItemCatBinding
 ) : RecyclerView.ViewHolder(binding.root){
     fun bind(cat: Cat, onCatClicked: (catId: String) -> Unit) {
+        val repo=LoCATorRepo.getInstance()
+        val img=cat.images[0]
         binding.listItemCatName.text = cat.name
-        binding.listItemCatInfo.text = cat.campus.toString()
+        binding.listItemCatInfo.text = cat.campus
+        CoroutineScope(Dispatchers.Main).launch {
+            // Call getCatImg in a coroutine
+            val catImage = repo.getCatImg(img)
+
+            // Set the fetched image on the ImageView
+            binding.listItemCatImg.setImageBitmap(catImage)
+        }
+
         binding.root.setOnClickListener {
             onCatClicked(cat.id)
         }
