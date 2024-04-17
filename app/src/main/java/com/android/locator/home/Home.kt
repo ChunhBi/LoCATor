@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,6 +34,8 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
+import java.util.Date
+import java.util.Locale
 
 
 class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
@@ -125,7 +128,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
             map?.let {
                 if (catImt != null) {
-                    addCustomIconMarker(it, latLng, catImt, markerTitle, markerSnippet,wit.catId)
+                    addCustomIconMarker(it, latLng, catImt, markerTitle, markerSnippet,wit.catId,wit.time)
                 }
             }
         }
@@ -143,11 +146,11 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         return bitmap
     }
 
-    private fun addCustomIconMarker(map: GoogleMap, latLng: LatLng, bitmap: Bitmap, markerTitle: String, markerSnippet: String, tag:String) {
+    private fun addCustomIconMarker(map: GoogleMap, latLng: LatLng, bitmap: Bitmap, markerTitle: String, markerSnippet: String, tag:String, time:Date) {
         // Convert the bitmap to a BitmapDescriptor
         val frameColor = Color.parseColor("#FFA500")
         val ersizedMap=resizeBitmap(bitmap, 150, 150)
-        val framedMap=addFrameToBitmap(addRoundedCornersToBitmap(ersizedMap,15f),frameColor,50)
+        val framedMap=addFrameToBitmap(addRoundedCornersToBitmap(ersizedMap,15f),frameColor,50,time)
         val icon = BitmapDescriptorFactory.fromBitmap(framedMap)
 
         // Create a MarkerOptions with the specified position, title, snippet, and custom icon
@@ -179,7 +182,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    private fun addFrameToBitmap(originalBitmap: Bitmap, frameColor: Int, frameWidth: Int): Bitmap {
+    private fun addFrameToBitmap(originalBitmap: Bitmap, frameColor: Int, frameWidth: Int, time:Date): Bitmap {
         // Create a new bitmap with padding for the frame
         val framedWidth = originalBitmap.width + frameWidth
         val framedHeight = originalBitmap.height + frameWidth+50
@@ -224,8 +227,9 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         textAlign = Paint.Align.LEFT // Adjust text alignment as needed
     }
 
+        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     // Draw the text on the bitmap at the specified coordinates
-    canvas.drawText("00:00", 38f, 55f, textPaint)
+    canvas.drawText(dateFormat.format(time), 38f, 55f, textPaint)
 
 
         // Draw the original bitmap centered within the frame
