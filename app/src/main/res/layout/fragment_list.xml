@@ -52,7 +52,7 @@
         app:elevation="4dp"
         app:itemActiveIndicatorStyle="@android:color/transparent"
         app:itemIconSize="30dp"
-        app:itemIconTint="#353535"
+        app:itemIconTint="@color/orange"
         app:itemRippleColor="@android:color/darker_gray"
         app:itemTextColor="#353535"
         app:labelVisibilityMode="unlabeled"
