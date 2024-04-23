@@ -112,7 +112,9 @@ class DatabaseImpl {
             //val imgTest=catData["image"]
             //Log.d(TAG,imgTest.toString())
             var campus = catData["campus"] as? String ?: "Unknown"
-            Cat(id, name, images, campus)
+            val createdAtTimestamp = (catData["createdAt"] as? Timestamp)?.toDate()?.time ?: 0L // Get creation timestamp
+            val createdAt = Date(createdAtTimestamp)
+            Cat(id, name, images, campus, createdAt)
         }
         _cats.addAll(fetchedCats.toMutableList())
 
@@ -236,6 +238,7 @@ class DatabaseImpl {
 
 
     suspend private fun addCat(cat: Cat) {
+        //只需要name和campus，其他的可以留空。
 
 
             val catsCollection = db.collection("cat")
@@ -243,7 +246,8 @@ class DatabaseImpl {
             val catData = mapOf(
                 "name" to cat.name,
                 "campus" to cat.campus,
-                "image" to mutableListOf<String>()
+                "image" to mutableListOf<String>(),
+                "createdAt" to Date()
             )
 
             catsCollection.add(catData)
@@ -264,9 +268,18 @@ class DatabaseImpl {
              document.id
         }
 
+        //delete img
         fetchedWitsId.forEach{id->
-            val imageRef: StorageReference = storage.reference.child("witnesses$id.jpg")
+            val imageRef: StorageReference = storage.reference.child("witnesses/$id.jpg")
             imageRef.delete().await()
+        }
+
+        //delete witness
+        for (witId in fetchedWitsId) {
+            db.collection("witness")
+                .document(witId)
+                .delete()
+                .await()
         }
 
         // delete all catImgs
@@ -275,6 +288,7 @@ class DatabaseImpl {
             val imgRef: StorageReference = storage.reference.child(ref)
             imgRef.delete().await()
         }
+
 
         //delete likes
         val likes = db.collection("like")

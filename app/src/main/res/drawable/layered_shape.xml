@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- First layer is the shadow shape -->
+    <item
+        android:left="4dp"
+        android:top="4dp"
+        android:drawable="@drawable/shadow_shape" />
+
+    <!-- Second layer is your existing shape -->
+    <item android:drawable="@drawable/bar_rounded" />
+</layer-list>

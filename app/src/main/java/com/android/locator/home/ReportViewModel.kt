@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class ReportViewModel : ViewModel() {
 //    private val catRepository = Cat.get()
@@ -20,9 +21,9 @@ class ReportViewModel : ViewModel() {
 //                _cats.value = it
 //            }
 //        }
-        val cat1 = Cat("Fluffy", "123", emptyList(), "https://cat-images.com/fluffy")
-        val cat2 = Cat("Whiskers", "456",  emptyList(), "https://cat-images.com/whiskers")
-        val cat3 = Cat("Mittens", "789",  emptyList(), "https://cat-images.com/mittens")
+        val cat1 = Cat("Fluffy", "123", emptyList(), "https://cat-images.com/fluffy", Date())
+        val cat2 = Cat("Whiskers", "456",  emptyList(), "https://cat-images.com/whiskers",Date())
+        val cat3 = Cat("Mittens", "789",  emptyList(), "https://cat-images.com/mittens",Date())
 
         _cats.value = listOf(cat1, cat2, cat3)
     }

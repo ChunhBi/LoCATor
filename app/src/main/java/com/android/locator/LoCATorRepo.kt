@@ -133,8 +133,38 @@ class LoCATorRepo private constructor() {
         return cats
     }
 
-    suspend fun getCatImg(path:String): Bitmap? {
-        return db.getCatImgBitmap(path)
+    suspend fun getCatImg(path:String?): Bitmap? {
+        if(path!=null){
+            return db.getCatImgBitmap(path)
+        }else{
+            return null
+        }
+
     }
 
+    suspend fun getCatFirstImg(catID:String): Bitmap? {
+
+        val cat=findCatById(catID)
+        if(cat!=null) {
+            val imgList=cat.images
+            if(imgList!=null&&imgList.size>0){
+                return getCatImg(imgList[0])
+            }else{
+                activityListener?.makeToast("getCatFirstImg: No such cat.")
+                return null
+            }
+        }else{
+            activityListener?.makeToast("getCatFirstImg: No such cat.")
+            return null
+        }
+    }
+
+    fun findCatById(idToFind: String): Cat? {
+        for (cat in cats) {
+            if (cat.id == idToFind) {
+                return cat // Return the cat if its ID matches the one we're looking for
+            }
+        }
+        return null // Return null if no cat with the specified ID is found
+    }
 }
