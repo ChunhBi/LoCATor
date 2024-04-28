@@ -50,8 +50,18 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
                         val time = witData["time"] as Timestamp
                         // Handle new witness document
                         // Send notification if necessary
-                        if(compareTimestamps(time, longToTimestamp(lastCheckedTimestamp))==1)
-                        sendNotification(id, time)
+                        if(compareTimestamps(time, longToTimestamp(lastCheckedTimestamp))==1){
+                            val catRef=FirebaseFirestore.getInstance().collection("cat")
+                                .document(id)
+                                .get()
+                                .addOnSuccessListener {document->
+                                    val catData = document.data
+                                    val name= catData?.get("name") as? String ?: "Unknown"
+                                    sendNotification(name, time)
+                                }
+
+                        }
+
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -70,8 +80,8 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
     private fun sendTestNotification() {
         Log.d("NOTIF","test")
     }
-    private fun sendNotification(catId:String, time:Timestamp) {
-        Log.d("NOTIF","${catId} witnessed at ${timestampToTimeString(time)}.")
+    private fun sendNotification(catName:String, time:Timestamp) {
+        Log.d("NOTIF","${catName} witnessed at ${timestampToTimeString(time)}.")
         val context: Context = applicationContext
         val intent = MainActivity.newIntent(context)
         val pendingIntent = PendingIntent.getActivity(
@@ -87,7 +97,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
             .setTicker(resources.getString(R.string.new_pictures_title))
             .setSmallIcon(android.R.drawable.ic_menu_report_image)
             .setContentTitle(resources.getString(R.string.new_pictures_title))
-            .setContentText(resources.getString(R.string.new_pictures_text))
+            .setContentText("${catName} "+resources.getString(R.string.new_pictures_text))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
