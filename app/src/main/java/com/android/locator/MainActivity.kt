@@ -8,10 +8,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.android.locator.home.Home
 import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
-
+import java.util.concurrent.TimeUnit
 
 
 //这个接口用于把Mainactivity注册给LoCATorRepo,
@@ -20,6 +26,8 @@ interface MainActivityListener{
     fun onLoginSuccess(user: FirebaseUser?)
     fun onLoginFailure(exception: Exception?)
     fun makeToast(m:String)
+
+    //fun startWorkManager()
 
     fun logOut()
 }
@@ -135,6 +143,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
         val homeFragment=Home()
         setFragmentToContainer(homeFragment)
+        startWorkManager()
     }
 
     override fun onLoginFailure(exception: Exception?) {
@@ -151,6 +160,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         val loginFragment = LoginFragment()
         loginFragment.setLoginFragmentListener(this)
         setFragmentToContainer(loginFragment)
+        cancelWorkManager()
     }
 
 //    override fun userLogin(email: String, pwd: String) {
@@ -198,5 +208,28 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         signUpFragment.setSignupFragmentListener(this)
         setFragmentToContainer(signUpFragment)
 
+    }
+
+    private fun startWorkManager(){
+        val likedCats=repo.get_Likes()
+        Log.d(TAG,"Likes: ${likedCats}")
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val inputData = Data.Builder()
+            .putStringArray("catIds", likedCats.toTypedArray())
+            .build()
+
+        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(10,TimeUnit.SECONDS)
+            .setInputData(inputData)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this).enqueue(workRequest)
+    }
+
+    private fun cancelWorkManager(){
+        WorkManager.getInstance(this).cancelAllWork()
     }
 }

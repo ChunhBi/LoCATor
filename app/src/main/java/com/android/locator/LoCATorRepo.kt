@@ -120,13 +120,17 @@ class LoCATorRepo private constructor() {
         activityListener?.logOut()
     }
 
-    suspend fun getWitBitMap(witId:String):Bitmap{
+    suspend fun getWitBitMap(witId:String):Bitmap?{
         return db.getWitImgBitmap(witId)
     }
 
     fun getWits():List<Witness>{
         Log.d(TAG,"${witnesses.size}")
         return witnesses
+    }
+
+    fun get_Likes():List<String>{
+        return likes
     }
 
     fun get_Cats(): MutableList<Cat> {

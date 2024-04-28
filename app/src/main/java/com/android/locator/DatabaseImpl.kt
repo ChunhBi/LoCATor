@@ -123,7 +123,7 @@ class DatabaseImpl {
     suspend fun fetchLikesFromFirestore(user:FirebaseUser?){
         _likes.clear()
         if(user!=null){
-            val result = db.collection("manager")
+            val result = db.collection("like")
                 .whereEqualTo("uid", user.uid)
                 .get(Source.SERVER)
                 .await()
@@ -133,9 +133,9 @@ class DatabaseImpl {
                 val catId = likeData["cat"] as? String ?: "Unknown"
                 catId
             }
+            _likes.addAll(fetchedLikes)
         }else{
             throw UserIsNull()
-
         }
 
     }
@@ -393,18 +393,24 @@ class DatabaseImpl {
 
     }
 
-    suspend fun getWitImgBitmap(widId:String):Bitmap{
-        val storageRef = storage.reference.child("witnesses/$widId.jpg")
-        checkFileExists(storageRef)
-        val ONE_MEGABYTE: Long = 1024 * 1024
+    suspend fun getWitImgBitmap(widId:String):Bitmap?{
+        try{
+            val storageRef = storage.reference.child("witnesses/$widId.jpg")
+            checkFileExists(storageRef)
+            val ONE_MEGABYTE: Long = 1024 * 1024
 
-        // Get the image bytes from Firebase Storage
-        val bytes = withContext(Dispatchers.IO) {
-            storageRef.getBytes(ONE_MEGABYTE).await()
+            // Get the image bytes from Firebase Storage
+            val bytes = withContext(Dispatchers.IO) {
+                storageRef.getBytes(ONE_MEGABYTE).await()
+            }
+
+            // Convert the byte array to a Bitmap
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        }catch (e:Exception){
+            Log.d(TAG,"witImgQueryError")
+            return null
         }
 
-        // Convert the byte array to a Bitmap
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 
 

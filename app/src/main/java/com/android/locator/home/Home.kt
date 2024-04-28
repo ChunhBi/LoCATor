@@ -118,7 +118,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
         val latLng = geoPointToLatLng(wit.geoPoint)
 
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
+
 
         lifecycleScope.launch {
             val catImt: Bitmap? = repo.getWitBitMap(wit.id)
@@ -129,6 +129,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
             map?.let {
                 if (catImt != null) {
                     addCustomIconMarker(it, latLng, catImt, markerTitle, markerSnippet,wit.catId,wit.time)
+                    map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
                 }
             }
         }

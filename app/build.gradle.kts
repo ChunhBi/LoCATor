@@ -79,5 +79,6 @@ dependencies {
     implementation ("com.firebaseui:firebase-ui-storage:7.2.0")
 
     implementation ("androidx.core:core-ktx:1.12.0")
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
 
 }
