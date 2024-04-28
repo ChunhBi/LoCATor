@@ -1,5 +1,6 @@
 package com.android.locator
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -17,13 +18,16 @@ import androidx.work.WorkManager
 import com.android.locator.home.Home
 import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
 //这个接口用于把Mainactivity注册给LoCATorRepo,
 //因为repo里的一些功能需要把结果或信息返回给Mainactivity
 interface MainActivityListener{
-    fun onLoginSuccess(user: FirebaseUser?)
+    fun onLoginSuccess()
     fun onLoginFailure(exception: Exception?)
     fun makeToast(m:String)
 
@@ -49,6 +53,12 @@ interface SignupFragmentListener{
 class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListener,SignupFragmentListener {
     val TAG="MAIN"
     private val repo: LoCATorRepo=LoCATorRepo.getInstance()
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
     //val auth=FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,67 +66,19 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         setContentView(R.layout.main_layout)
 
         repo.setLoginListener(this)
+        if(repo.hasUser()){
+            CoroutineScope(Dispatchers.Main).launch {
+                repo.initAllDbData()
+                onLoginSuccess()
+                return@launch
+            }
+            return
+
+        }
 
         val loginFragment = LoginFragment()
         loginFragment.setLoginFragmentListener(this)
         setFragmentToContainer(loginFragment)
-
-
-
-
-        /*
-                //auth=FirebaseAuth.getInstance()
-
-                viewModel.setLoginListener(this)
-
-                auth.signInWithEmailAndPassword("ydhe@bu.edu", "12345678").addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success")
-                        val user = auth.currentUser
-
-                        showInfo(user)
-
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-
-                    }
-                }
-
-
-                lifecycleScope.launch {
-                    try{
-                        db.fetchCatsFromFirestore()
-                        db.fetchWitsFromFirestore()
-                        db.fetchLikesFromFirestore(auth.currentUser)
-                        val cats=db.getAllCats()
-                        val wits=db.getAllWits()
-                        val likes=db.getLikes()
-
-                        cats.forEach { cat->
-                            Log.d(TAG,cat.toString())
-                        }
-                        wits.forEach { wit->
-                            Log.d(TAG,wit.toString())
-                        }
-                        likes.forEach { like->
-                            Log.d(TAG,like)
-                        }
-                    }catch (e:Exception){
-
-                    }
-
-                }
-
-                 */
-
 
 
 
@@ -138,11 +100,13 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
     }
 
 
-    override fun onLoginSuccess(user:FirebaseUser?) {
+    override fun onLoginSuccess() {
+        val user=repo.getUser()
         showInfo(user)
         Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
         val homeFragment=Home()
         setFragmentToContainer(homeFragment)
+        Log.d("MAIN","set to homeFragment")
         startWorkManager()
     }
 
@@ -212,6 +176,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
 
     private fun startWorkManager(){
         val likedCats=repo.get_Likes()
+        val allCats=repo.get_Cats()
         Log.d(TAG,"Likes: ${likedCats}")
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)

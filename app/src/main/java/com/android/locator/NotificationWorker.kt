@@ -1,9 +1,15 @@
 package com.android.locator
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.Timestamp
@@ -14,6 +20,7 @@ import java.util.Locale
 class NotificationWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     var catIds:List<String> = mutableListOf()
+    var allCats:List<Cat> = mutableListOf()
 
     @SuppressLint("SuspiciousIndentation")
     override fun doWork(): Result {
@@ -39,12 +46,12 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
                     for (document in documents) {
                         Log.d("NOTIF", "Checking witness...")
                         val witData = document.data
-                        val name = witData["cat"] as? String ?: "Unknown"
+                        val id = witData["cat"] as? String ?: "Unknown"
                         val time = witData["time"] as Timestamp
                         // Handle new witness document
                         // Send notification if necessary
                         if(compareTimestamps(time, longToTimestamp(lastCheckedTimestamp))==1)
-                        sendNotification(name, time)
+                        sendNotification(id, time)
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -63,8 +70,39 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
     private fun sendTestNotification() {
         Log.d("NOTIF","test")
     }
-    private fun sendNotification(catName:String, time:Timestamp) {
-        Log.d("NOTIF","${catName} witnessed at ${timestampToTimeString(time)}.")
+    private fun sendNotification(catId:String, time:Timestamp) {
+        Log.d("NOTIF","${catId} witnessed at ${timestampToTimeString(time)}.")
+        val context: Context = applicationContext
+        val intent = MainActivity.newIntent(context)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        val resources = context.resources
+
+        val notification = NotificationCompat
+            .Builder(context, NOTIFICATION_CHANNEL_ID)
+            .setTicker(resources.getString(R.string.new_pictures_title))
+            .setSmallIcon(android.R.drawable.ic_menu_report_image)
+            .setContentTitle(resources.getString(R.string.new_pictures_title))
+            .setContentText(resources.getString(R.string.new_pictures_text))
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            Log.d("NOTIF", "Missing permission.")
+            return
+        }
+        NotificationManagerCompat.from(context).notify(0, notification)
     }
 
     fun compareTimestamps(timestamp1: Timestamp, timestamp2: Timestamp): Int {

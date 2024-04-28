@@ -13,4 +13,7 @@
     <string name="liked_cats">Liked Cats</string>
     <string name="name_of_cat">Name of Cat:</string>
     <string name="cat_detail">Cat Detail</string>
+    <string name="notification_channel_name">New witness</string>
+    <string name="new_pictures_title">New witness</string>
+    <string name="new_pictures_text">The cat you like has just been witnessed.</string>
 </resources>

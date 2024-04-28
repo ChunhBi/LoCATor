@@ -3,6 +3,7 @@ package com.android.locator
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,17 @@ class LoCATorRepo private constructor() {
 
     fun setLoginListener(listener: MainActivityListener) {
         activityListener = listener
+    }
+
+    fun hasUser():Boolean{
+        if(auth.currentUser!=null){
+            return true
+        }
+        return false
+    }
+
+    fun getUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     suspend fun initAllDbData(){
@@ -68,7 +80,7 @@ class LoCATorRepo private constructor() {
                         // Handle any exception that may occur during the database initialization
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
-                    activityListener?.onLoginSuccess(user)
+                    activityListener?.onLoginSuccess()
                 }
 
 
@@ -99,7 +111,7 @@ class LoCATorRepo private constructor() {
                         // Handle any exception that may occur during the database initialization
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
-                    activityListener?.onLoginSuccess(user)
+                    activityListener?.onLoginSuccess()
                 }
 
 
