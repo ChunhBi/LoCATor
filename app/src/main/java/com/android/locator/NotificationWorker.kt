@@ -20,62 +20,71 @@ import java.util.Locale
 class NotificationWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     var catIds:List<String> = mutableListOf()
-    var allCats:List<Cat> = mutableListOf()
+    //var uid:String=""
 
     @SuppressLint("SuspiciousIndentation")
     override fun doWork(): Result {
-        sendTestNotification()
-        val tmp = inputData.getStringArray("catIds") ?: return Result.success()
-        if (tmp != null) {
-            catIds = tmp.filterNotNull()
-        }
-        Log.d("NOTIF","the first id "+catIds[0])
-        // Use catIds to query Firestore for new witnesses
+        try{
+            sendTestNotification()
+            val tmp = inputData.getStringArray("catIds") ?: return Result.success()
+            if (tmp != null) {
+                catIds = tmp.filterNotNull()
+            }
+            //uid= inputData.getString("uid").toString()
+            Log.d("NOTIF","the first id "+catIds[0])
+            // Use catIds to query Firestore for new witnesses
 
-        val lastCheckedTimestamp = TimestampManager.getLastCheckedTimestamp(applicationContext)
-        Log.d("NOTIF","last timestamp: ${lastCheckedTimestamp}")
+            val lastCheckedTimestamp = TimestampManager.getLastCheckedTimestamp(applicationContext)
+            Log.d("NOTIF","last timestamp: ${lastCheckedTimestamp}")
 
 
-        // Example: Query Firestore for new witness documents related to catIds
-        for (catId in catIds) {
-            val witnessRef = FirebaseFirestore.getInstance().collection("witness")
-                .whereEqualTo("cat", catId)
-                //.whereGreaterThan("time", longToTimestamp(lastCheckedTimestamp))
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        Log.d("NOTIF", "Checking witness...")
-                        val witData = document.data
-                        val id = witData["cat"] as? String ?: "Unknown"
-                        val time = witData["time"] as Timestamp
-                        // Handle new witness document
-                        // Send notification if necessary
-                        if(compareTimestamps(time, longToTimestamp(lastCheckedTimestamp))==1){
-                            val catRef=FirebaseFirestore.getInstance().collection("cat")
-                                .document(id)
-                                .get()
-                                .addOnSuccessListener {document->
-                                    val catData = document.data
-                                    val name= catData?.get("name") as? String ?: "Unknown"
-                                    sendNotification(name, time)
-                                }
+            // Example: Query Firestore for new witness documents related to catIds
+            for (catId in catIds) {
+                val witnessRef = FirebaseFirestore.getInstance().collection("witness")
+                    .whereEqualTo("cat", catId)
+                    //.whereGreaterThan("time", longToTimestamp(lastCheckedTimestamp))
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            Log.d("NOTIF", "Checking witness...")
+                            val witData = document.data
+                            val witId=document.id
+                            val catId = witData["cat"] as? String ?: "Unknown"
+                            val time = witData["time"] as Timestamp
+                            // Handle new witness document
+                            // Send notification if necessary
+                            if(compareTimestamps(time, longToTimestamp(lastCheckedTimestamp))==1){
+                                val repo=LoCATorRepo.getInstance()
+                                repo.addNotif(witId)
+                                val catRef=FirebaseFirestore.getInstance().collection("cat")
+                                    .document(catId)
+                                    .get()
+                                    .addOnSuccessListener {document->
+                                        val catData = document.data
+                                        val name= catData?.get("name") as? String ?: "Unknown"
+                                        sendNotification(name, time)
+                                    }
+
+                            }
 
                         }
-
                     }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("NOTIF", "Failed to load witnesses.")
-                }
+                    .addOnFailureListener { exception ->
+                        Log.d("NOTIF", "Failed to load witnesses.")
+                    }
+            }
+
+
+            val currentTimestamp = System.currentTimeMillis()
+            Log.d("NOTIF","new timestamp: ${currentTimestamp}")
+            TimestampManager.saveLastCheckedTimestamp(applicationContext, currentTimestamp)
+
+
+            return Result.success()
+        }catch (e:Exception){
+            return Result.success()
         }
 
-
-        val currentTimestamp = System.currentTimeMillis()
-        Log.d("NOTIF","new timestamp: ${currentTimestamp}")
-        TimestampManager.saveLastCheckedTimestamp(applicationContext, currentTimestamp)
-
-
-        return Result.success()
     }
     private fun sendTestNotification() {
         Log.d("NOTIF","test")

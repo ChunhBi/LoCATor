@@ -35,6 +35,7 @@ class DatabaseImpl {
     private val _cats: MutableList<Cat> = mutableListOf()
     private val _witnesses: MutableList<Witness> = mutableListOf()
     private val _likes:MutableList<String> = mutableListOf()
+    private val _notifications:MutableList<String> = mutableListOf()
 
     /*
     init{
@@ -139,6 +140,45 @@ class DatabaseImpl {
         }
 
     }
+
+    suspend fun fetchNotificationsFromFirebase(user:FirebaseUser) {
+        _notifications.clear()
+        if (user != null) {
+            val result =
+                db.collection("notification").whereEqualTo("uid", user.uid).get(Source.SERVER)
+                    .await()
+            val fetchedNotifs = result.map { document ->
+                val notifData = document.data
+                val id = document.id
+                val witid = notifData["witness"] as? String ?: ""
+                witid
+            }
+            _notifications.addAll(fetchedNotifs.toMutableList())
+        } else {
+            throw UserIsNull()
+        }
+    }
+
+
+    suspend fun addNotification(witid:String, user:FirebaseUser){
+        if(user!=null){
+            val notifCollection = db.collection("notification")
+            val notifData = mapOf(
+                "uid" to user.uid,
+                "witness" to witid,
+            )
+
+            notifCollection.add(notifData)
+                .addOnSuccessListener { documentReference ->
+                }
+                .addOnFailureListener { exception ->
+                }
+            fetchNotificationsFromFirebase(user)
+        }else{
+            throw UserIsNull()
+        }
+    }
+
 
     suspend fun getLikes():MutableList<String>{
         return _likes

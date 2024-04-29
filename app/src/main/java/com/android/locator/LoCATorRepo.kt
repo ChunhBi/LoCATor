@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class LoCATorRepo private constructor() {
@@ -182,5 +183,14 @@ class LoCATorRepo private constructor() {
             }
         }
         return null // Return null if no cat with the specified ID is found
+    }
+
+    fun addNotif(witid:String){
+        val scope = CoroutineScope(Dispatchers.Main) // Main thread coroutine scope
+        scope.launch(Dispatchers.IO) {
+            auth.currentUser?.let { db.addNotification(witid, it) }
+        }
+
+
     }
 }

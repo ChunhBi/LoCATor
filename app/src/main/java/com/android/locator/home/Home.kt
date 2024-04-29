@@ -149,7 +149,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
     private fun addCustomIconMarker(map: GoogleMap, latLng: LatLng, bitmap: Bitmap, markerTitle: String, markerSnippet: String, tag:String, time:Date) {
         // Convert the bitmap to a BitmapDescriptor
-        val frameColor = Color.parseColor("#FFA500")
+        val frameColor = resources.getColor(R.color.yellow_orange)
         val ersizedMap=resizeBitmap(bitmap, 150, 150)
         val framedMap=addFrameToBitmap(addRoundedCornersToBitmap(ersizedMap,15f),frameColor,50,time)
         val icon = BitmapDescriptorFactory.fromBitmap(framedMap)

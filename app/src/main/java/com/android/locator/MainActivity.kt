@@ -184,6 +184,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
 
         val inputData = Data.Builder()
             .putStringArray("catIds", likedCats.toTypedArray())
+            //.putString("uid", repo.getUser()?.uid)
             .build()
 
         val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(10,TimeUnit.SECONDS)
