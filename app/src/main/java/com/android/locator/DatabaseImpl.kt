@@ -141,7 +141,7 @@ class DatabaseImpl {
 
     }
 
-    suspend fun fetchNotificationsFromFirebase(user:FirebaseUser) {
+    suspend fun fetchNotificationsFromFirebase(user:FirebaseUser?) {
         _notifications.clear()
         if (user != null) {
             val result =
@@ -179,6 +179,9 @@ class DatabaseImpl {
         }
     }
 
+    fun getNotifs():List<String>{
+        return _notifications
+    }
 
     suspend fun getLikes():MutableList<String>{
         return _likes

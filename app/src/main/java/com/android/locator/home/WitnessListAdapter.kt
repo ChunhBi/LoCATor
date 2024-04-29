@@ -3,22 +3,32 @@ package com.android.locator.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.locator.Cat
+import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.Witness
 import com.android.locator.databinding.ListItemWitnessBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WitnessHolder (
     val binding: ListItemWitnessBinding
 ) : RecyclerView.ViewHolder(binding.root){
 //    fun bind(cat: Cat, onCatClicked: (crimeId: UUID) -> Unit) {
         fun bind(witness: Witness) {
-        binding.listItemWitnessName.text = witness.catId
+            val catId=witness.catId
+        binding.listItemWitnessName.text = LoCATorRepo.getInstance().findCatNameById(catId)
         binding.listItemWitnessInfo.text = witness.time.toString()
-//        binding.root.setOnClickListener {
-//            onCrimeClicked(crime.id)
-//        }
-    // test use
-//        binding.listItemWitnessImg.setImageResource(R.drawable.ic_notifications_black_24dp)
+        CoroutineScope(Dispatchers.Main).launch {
+            var witImg = LoCATorRepo.getInstance().getWitImg(witness.id)
+            if(witImg==null){
+                witImg=LoCATorRepo.getInstance().getCatFirstImg(catId)
+            }
+            //TODO: implement repo.getWitImg
+            binding.listItemWitnessImg.setImageBitmap(witImg)
+        }
+
     }
 }
 
@@ -39,4 +49,6 @@ class WitnessListAdapter (
     }
 
     override fun getItemCount() = witnesses.size
+
+
 }

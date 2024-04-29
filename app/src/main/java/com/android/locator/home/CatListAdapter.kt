@@ -23,7 +23,7 @@ class CatHolder (
         binding.listItemCatInfo.text = cat.campus
         CoroutineScope(Dispatchers.Main).launch {
             // Call getCatImg in a coroutine
-            val catImage = repo.getCatImg(img)
+            val catImage = repo.getCatFirstImg(cat.id)
 
             // Set the fetched image on the ImageView
             binding.listItemCatImg.setImageBitmap(catImage)

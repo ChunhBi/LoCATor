@@ -27,6 +27,7 @@ class LoCATorRepo private constructor() {
     val cats: MutableList<Cat> = mutableListOf()
     val witnesses: MutableList<Witness> = mutableListOf()
     val likes:MutableList<String> = mutableListOf()
+    val notifs:MutableList<String> = mutableListOf()
 
     var activityListener:MainActivityListener?=null
 
@@ -49,6 +50,7 @@ class LoCATorRepo private constructor() {
         db.fetchWitsFromFirestore()
         db.fetchCatsFromFirestore()
         db.fetchLikesFromFirestore(auth.currentUser)
+        db.fetchNotificationsFromFirebase(auth.currentUser)
 
         cats.clear()
         cats.addAll(db.getAllCats())
@@ -59,6 +61,11 @@ class LoCATorRepo private constructor() {
 
         likes.clear()
         likes.addAll(db.getLikes())
+
+        notifs.clear()
+        notifs.addAll(db.getNotifs())
+
+
 
     }
 
@@ -150,6 +157,14 @@ class LoCATorRepo private constructor() {
         return cats
     }
 
+    suspend fun getWitImg(witId:String):Bitmap?{
+        if(witId!=null){
+            return db.getWitImgBitmap(witId)
+        }else{
+            return null
+        }
+    }
+
     suspend fun getCatImg(path:String?): Bitmap? {
         if(path!=null){
             return db.getCatImgBitmap(path)
@@ -192,5 +207,18 @@ class LoCATorRepo private constructor() {
         }
 
 
+    }
+
+    fun get_Notifs():List<String>{
+        return notifs
+    }
+
+    fun findCatNameById(catId: String): String? {
+        for (cat in cats) {
+            if (cat.id == catId) {
+                return cat.name
+            }
+        }
+        return null // Return null if cat with given ID is not found
     }
 }
