@@ -1,5 +1,6 @@
 package com.android.locator.home
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.android.locator.databinding.ListItemCatBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.UUID
 
 class CatHolder (
@@ -26,7 +28,13 @@ class CatHolder (
             val catImage = repo.getCatFirstImg(cat.id)
 
             // Set the fetched image on the ImageView
-            binding.listItemCatImg.setImageBitmap(catImage)
+            if(catImage!=null) {
+                binding.listItemCatImg.setImageBitmap(BitmapHelper.addRoundedCornersToBitmap(catImage,15f))
+
+
+            }
+
+
         }
 
         binding.root.setOnClickListener {

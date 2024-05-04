@@ -11,7 +11,9 @@
     <color name="lightest_orange">#FFF6f0</color>
     <color name="red">#EB3A44</color>
     <color name="light_orange">#F5B28D</color>
-<!--    <color name=""></color>-->
+
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimary">#DF7474</color>
 <!--    <color name=""></color>-->
 <!--    <color name=""></color>-->
 <!--    <color name=""></color>-->

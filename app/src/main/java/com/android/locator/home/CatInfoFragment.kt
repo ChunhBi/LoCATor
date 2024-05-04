@@ -52,7 +52,9 @@ class CatInfoFragment:Fragment() {
         }
         CoroutineScope(Dispatchers.Main).launch {
             binding.apply {
-                catInfoImg.setImageBitmap(cat?.let { repo.getCatFirstImg(it.id) })
+                //catInfoImg.setImageBitmap(cat?.let { repo.getCatFirstImg(it.id) })
+                val catImg=cat?.let { repo.getCatFirstImg(it.id) }
+                catInfoImg.setImageBitmap(catImg?.let { BitmapHelper.addRoundedCornersToBitmap(it,15f) })
                 catInfoName.text= "Name: "+cat?.name ?: "undefined"
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(cat?.createdAt)

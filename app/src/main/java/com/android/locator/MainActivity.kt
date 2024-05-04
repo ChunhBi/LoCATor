@@ -15,6 +15,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.android.locator.home.BitmapHelper
 import com.android.locator.home.Home
 import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
@@ -63,6 +64,8 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        BitmapHelper.set_Context(this)
+
         setContentView(R.layout.main_layout)
 
         repo.setLoginListener(this)
@@ -79,6 +82,8 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         val loginFragment = LoginFragment()
         loginFragment.setLoginFragmentListener(this)
         setFragmentToContainer(loginFragment)
+
+
 
 
 

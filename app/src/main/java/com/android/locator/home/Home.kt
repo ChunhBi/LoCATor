@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -48,6 +49,10 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     private var map: GoogleMap? = null
     private val repo =LoCATorRepo.getInstance()
     private lateinit var wits:List<Witness>
+    private lateinit var groupedWitnesses:Map<String, List<Witness>>
+    private lateinit var latestWitnesses: MutableList<Witness>
+
+    private var status=0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,10 +93,19 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                 // Log the size of wits to check if data is fetched
                 Log.d("MyFragment", "Wits list size: ${wits.size}")
 
-                // Add markers to the map for each wit
-                wits.forEach { wit ->
-                    addMarkersToMap(wit)
+                groupedWitnesses = wits.groupBy { it.catId }
+
+                latestWitnesses = mutableListOf<Witness>()
+
+                groupedWitnesses.forEach { (_, witnesses) ->
+                    // Get the witness with the latest time for each catId
+                    val latestWitness = witnesses.maxByOrNull { it.time }
+                    // Add the latest witness to the list
+                    latestWitness?.let { latestWitnesses.add(it) }
                 }
+
+                // Add markers to the map for each wit
+                drawLatestMarkers()
             } catch (e: Exception) {
                 // Log the exception if there is any error
                 Log.e("MyFragment", "Error fetching wits or adding markers: ${e.message}")
@@ -121,14 +135,17 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
 
         lifecycleScope.launch {
-            val catImt: Bitmap? = repo.getWitBitMap(wit.id)
+            var catImg: Bitmap? = repo.getWitBitMap(wit.id)
+            if(catImg==null){
+                catImg=repo.getCatFirstImg(wit.catId)
+            }
 
             val markerTitle = "Square Marker"
             val markerSnippet = "This is a square marker with an image"
 
             map?.let {
-                if (catImt != null) {
-                    addCustomIconMarker(it, latLng, catImt, markerTitle, markerSnippet,wit.catId,wit.time)
+                if (catImg != null) {
+                    addCustomIconMarker(it, latLng, catImg, markerTitle, markerSnippet,wit.catId,wit.time)
                     map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
                 }
             }
@@ -150,8 +167,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     private fun addCustomIconMarker(map: GoogleMap, latLng: LatLng, bitmap: Bitmap, markerTitle: String, markerSnippet: String, tag:String, time:Date) {
         // Convert the bitmap to a BitmapDescriptor
         val frameColor = resources.getColor(R.color.yellow_orange)
-        val ersizedMap=resizeBitmap(bitmap, 150, 150)
-        val framedMap=addFrameToBitmap(addRoundedCornersToBitmap(ersizedMap,15f),frameColor,50,time)
+        val ersizedMap=BitmapHelper.resizeBitmap(bitmap, 150, 150)
+        val framedMap=BitmapHelper.addFrameToBitmap(BitmapHelper.addRoundedCornersToBitmap(ersizedMap,15f),frameColor,50,time)
         val icon = BitmapDescriptorFactory.fromBitmap(framedMap)
 
         // Create a MarkerOptions with the specified position, title, snippet, and custom icon
@@ -168,113 +185,77 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         marker?.tag=tag
     }
 
-    private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        // Create a matrix for resizing the bitmap
-        val matrix = Matrix()
-
-        // Calculate the scale factor for width and height
-        val scaleWidth = width.toFloat() / bitmap.width
-        val scaleHeight = height.toFloat() / bitmap.height
-
-        // Set the scale factors on the matrix
-        matrix.postScale(scaleWidth, scaleHeight)
-
-        // Create a new resized bitmap using the matrix
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-    }
-
-    private fun addFrameToBitmap(originalBitmap: Bitmap, frameColor: Int, frameWidth: Int, time:Date): Bitmap {
-        // Create a new bitmap with padding for the frame
-        val framedWidth = originalBitmap.width + frameWidth
-        val framedHeight = originalBitmap.height + frameWidth+50
-        val framedBitmap = Bitmap.createBitmap(framedWidth, framedHeight+30, Bitmap.Config.ARGB_8888)
-
-        // Create a Canvas to draw on the new bitmap
-        val canvas = Canvas(framedBitmap)
-
-        // Create a Paint object for the frame
-        val paint = Paint().apply {
-            color = frameColor
-            style = Paint.Style.FILL
-            isAntiAlias = true
-        }
-
-        // Create a Path object for the rounded rectangle
-        val path = Path().apply {
-            addRoundRect(
-                0f, 0f,
-                framedWidth.toFloat(), framedHeight.toFloat(),
-                30f, 30f,
-                Path.Direction.CW
-            )
-        }
-
-        // Draw the colored rounded rectangle on the new bitmap
-        canvas.drawPath(path, paint)
-
-        val trianglePath = Path().apply {
-            moveTo(framedWidth / 2f-30, framedHeight.toFloat())
-            lineTo((framedWidth / 2f) + 30, framedHeight.toFloat())
-            lineTo((framedWidth / 2f), framedHeight.toFloat() +30)
-            close()
-        }
-        canvas.drawPath(trianglePath, paint)
-
-        val textPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.FILL
-        isAntiAlias = true
-        this.textSize = 50f
-        textAlign = Paint.Align.LEFT // Adjust text alignment as needed
-    }
-
-        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    // Draw the text on the bitmap at the specified coordinates
-    canvas.drawText(dateFormat.format(time), 38f, 55f, textPaint)
 
 
-        // Draw the original bitmap centered within the frame
-        val left = frameWidth/2
-        val top = frameWidth/2+50
-        canvas.drawBitmap(originalBitmap, left.toFloat(), top.toFloat(), null)
 
-        return framedBitmap
-    }
 
-    fun addRoundedCornersToBitmap(originalBitmap: Bitmap, cornerRadius: Float): Bitmap {
-        // Create a new bitmap with the same width and height as the original bitmap
-        val width = originalBitmap.width
-        val height = originalBitmap.height
-        val roundedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
-        // Create a Canvas to draw on the new bitmap
-        val canvas = Canvas(roundedBitmap)
-
-        // Create a Path object to define the rounded corners
-        val path = Path()
-        path.addRoundRect(0f, 0f, width.toFloat(), height.toFloat(), cornerRadius, cornerRadius, Path.Direction.CW)
-
-        // Create a Paint object to draw the bitmap with anti-aliasing enabled
-        val paint = Paint()
-        paint.isAntiAlias = true
-
-        // Clip the canvas to the rounded corners path
-        canvas.clipPath(path)
-
-        // Draw the original bitmap onto the canvas, which will apply the rounded corners
-        canvas.drawBitmap(originalBitmap, 0f, 0f, paint)
-
-        return roundedBitmap
-    }
 
     override fun onMarkerClick(marker: Marker): Boolean {
         // Retrieve the ID from the marker's tag property
-        Toast.makeText(requireContext(),marker.tag.toString(),Toast.LENGTH_SHORT).show()
+        val tag=marker.tag.toString()
+        //Toast.makeText(requireContext(),marker.tag.toString(),Toast.LENGTH_SHORT).show()
         Log.d("MARKER","clicked")
+        map?.clear()
+
+        if(status==0){
+            drawMarkersOfACat(tag)
+            status=1
+        }else{
+            status=0
+            drawLatestMarkers()
+        }
+
+
+
 
         // Return false to allow the default behavior (e.g., displaying an info window)
         return false
     }
+
+    fun drawMarkersOfACat(catId:String){
+        val catwits=getSortedCatWits(catId)
+        Log.d("MARKER","num of wit: ${catwits.size}")
+        val posList= mutableListOf<LatLng>()
+        catwits.forEach {
+            addMarkersToMap(it)
+            posList.add(convertGeoPointToLatLng(it.geoPoint))
+        }
+        map?.let { drawPolyline(it,posList, R.color.orange, 10f) }
+    }
+
+    fun drawLatestMarkers(){
+        latestWitnesses.forEach { wit ->
+            addMarkersToMap(wit)
+        }
+    }
+
+    fun getSortedCatWits(catId:String): List<Witness> {
+        groupedWitnesses.keys.forEach{Log.d("MARKER","Cat as key : ${it}")}
+        Log.d("MARKER","Cat key : ${catId}")
+        val witnessesForCat = groupedWitnesses[catId] ?: emptyList()
+
+        val sortedWitnesses = witnessesForCat.sortedBy { it.time }
+        return sortedWitnesses
+    }
+
+    fun convertGeoPointToLatLng(geoPoint: GeoPoint): LatLng {
+        val latitude = geoPoint.latitude
+        val longitude = geoPoint.longitude
+        return LatLng(latitude, longitude)
+    }
+
+    fun drawPolyline(googleMap: GoogleMap, points: List<LatLng>, color: Int, width: Float) {
+        // Define polyline options
+        val polylineOptions = PolylineOptions()
+            .addAll(points) // Add all LatLng points to the polyline
+            .color(color) // Set polyline color
+            .width(width) // Set polyline width
+
+        // Add the polyline to the map
+        googleMap.addPolyline(polylineOptions)
+    }
+
 
 
 

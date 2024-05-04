@@ -24,7 +24,7 @@ class TestActivity : AppCompatActivity() {
             wits.forEach {
                 Log.d("LOAD",it.toString())
             }
-            db.addWitness(Witness(id="", catId = "ZvZdIpZOBVG4PGLhFfgd", geoPoint = GeoPoint(42.3501, -71.1056), time = Date()))
+            db.uploadWitImg("XVYF29h80csEEigo2B8J",R.raw.cat0, context = this@TestActivity)
         }
 
     }

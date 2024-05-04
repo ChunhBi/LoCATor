@@ -25,7 +25,6 @@ class WitnessHolder (
             if(witImg==null){
                 witImg=LoCATorRepo.getInstance().getCatFirstImg(catId)
             }
-            //TODO: implement repo.getWitImg
             binding.listItemWitnessImg.setImageBitmap(witImg)
         }
 
