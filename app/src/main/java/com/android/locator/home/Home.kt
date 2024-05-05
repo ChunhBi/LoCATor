@@ -147,6 +147,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                 if (catImg != null) {
                     addCustomIconMarker(it, latLng, catImg, markerTitle, markerSnippet,wit.catId,wit.time)
                     map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
+                    //TODO: move camera to current position
                 }
             }
         }
@@ -214,7 +215,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     }
 
     fun drawMarkersOfACat(catId:String){
-        val catwits=getSortedCatWits(catId)
+        var catwits=getSortedCatWits(catId)
         Log.d("MARKER","num of wit: ${catwits.size}")
         val posList= mutableListOf<LatLng>()
         catwits.forEach {
@@ -225,7 +226,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     }
 
     fun drawLatestMarkers(){
-        latestWitnesses.forEach { wit ->
+        val last10 = latestWitnesses.takeLast(10)
+        last10.forEach { wit ->
             addMarkersToMap(wit)
         }
     }

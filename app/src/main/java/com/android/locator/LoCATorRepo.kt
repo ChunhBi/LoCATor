@@ -1,5 +1,6 @@
 package com.android.locator
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -220,5 +221,13 @@ class LoCATorRepo private constructor() {
             }
         }
         return null // Return null if cat with given ID is not found
+    }
+
+    suspend fun add_witness(wit:Witness):String{
+        return db.addWitness(wit)
+    }
+
+    suspend fun upload_witness_img(witid:String,img:Bitmap){
+        db.uploadWitImg_(witid,img)
     }
 }

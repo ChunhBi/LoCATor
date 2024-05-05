@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.util.Date
 import java.util.Locale
@@ -434,6 +435,16 @@ class DatabaseImpl {
         storageRef.putStream(inputStream).await()
 
 
+    }
+
+    suspend fun uploadWitImg_(witid:String, bitmap: Bitmap){
+        assertWitIdExists(witid)
+        val imgPath="witnesses/$witid.jpg"
+        val storageRef = storage.reference.child(imgPath)
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val byteArray = stream.toByteArray()
+        storageRef.putBytes(byteArray)
     }
 
     suspend fun getWitImgBitmap(widId:String):Bitmap?{

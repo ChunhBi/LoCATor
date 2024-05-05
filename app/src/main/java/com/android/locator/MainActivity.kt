@@ -1,5 +1,6 @@
 package com.android.locator
 
+import LocationHelper
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         super.onCreate(savedInstanceState)
 
         BitmapHelper.set_Context(this)
+        //LocationHelper.set_Context(this)
 
         setContentView(R.layout.main_layout)
 
