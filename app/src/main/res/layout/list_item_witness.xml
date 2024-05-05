@@ -17,7 +17,7 @@
         android:layout_marginTop="16dp"
         android:text="Witnessed Cat Name"
         android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toEndOf="@+id/list_item_witness_img"
+        app:layout_constraintStart_toEndOf="@+id/list_item_witness_img_card"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -28,10 +28,10 @@
         android:layout_marginBottom="16dp"
         android:text="Time Info"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_item_witness_img" />
+        app:layout_constraintStart_toEndOf="@+id/list_item_witness_img_card" />
 
-    <ImageView
-        android:id="@+id/list_item_witness_img"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/list_item_witness_img_card"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -40,7 +40,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/cat"
-        android:scaleType="centerCrop"/>
+        app:cardCornerRadius="8dp"
+        android:layout_margin="15dp"
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/list_item_witness_img"
+
+            android:src="@drawable/cat"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

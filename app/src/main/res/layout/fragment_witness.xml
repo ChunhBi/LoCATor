@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/almostBlack">
+    tools:background="@color/almostBlack"
+    android:background="@drawable/semi_transparent">
 
     <TextView
         android:id="@+id/witness_list_title"
