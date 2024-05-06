@@ -38,6 +38,28 @@ class UserSettingFragment: Fragment() {
             settingLogOutBtn.setOnClickListener{
                 repo.userLogOut()
             }
+            settingWitnessBtn.setOnClickListener {
+                navController.navigate(
+                    UserSettingFragmentDirections.actionUserSetting2UserList(0)
+                )
+            }
+            settingLikedBtn.setOnClickListener {
+                navController.navigate(
+                    UserSettingFragmentDirections.actionUserSetting2UserList(1)
+                )
+            }
+            settingNotBtn.setOnClickListener {
+                navController.navigate(
+                    UserSettingFragmentDirections.actionUserSetting2UserList(2)
+                )
+            }
+            settingPswBtn.setOnClickListener {
+                navController.navigate(
+                    UserSettingFragmentDirections.actionUserSetting2ChangePswd()
+                )
+            }
+//            settingIconBtn
+//            settingEmail
         }
     }
 }
