@@ -61,6 +61,12 @@
         <action
             android:id="@+id/action_userSetting_2_home"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_userSetting_2_userList"
+            app:destination="@id/userListFragment" />
+        <action
+            android:id="@+id/action_userSetting_2_changePswd"
+            app:destination="@id/changePswdFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
@@ -91,6 +97,27 @@
         <argument
             android:name="catId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.android.locator.home.UserListFragment"
+        android:label="UserListFragment"
+        tools:layout="@layout/fragment_list_user">
+        <action
+            android:id="@+id/action_userList_2_userSetting"
+            app:destination="@id/userSettingFragment" />
+        <argument
+            android:name="choice"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePswdFragment"
+        android:name="com.android.locator.ChangePswdFragment"
+        android:label="ChangePswdFragment"
+        tools:layout="@layout/change_pswd_layout">
+        <action
+            android:id="@+id/action_changePswd_2_userSetting"
+            app:destination="@id/userSettingFragment" />
     </fragment>
 
 </navigation>

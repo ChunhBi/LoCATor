@@ -4,9 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightest_orange"
     tools:context=".MainActivity">
 
     <!-- App Name -->
+    <Button
+        android:id="@+id/change_pswd_back_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/btn_circled"
+        android:padding="0dp"
+        android:shadowColor="@color/almostBlack"
+        android:text="B"
+        android:textColor="@color/orange"
+        android:textSize="20sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
@@ -23,13 +41,13 @@
 
     <!-- Email EditText -->
     <EditText
-        android:id="@+id/emailEditText"
+        android:id="@+id/oldPswdText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Email"
+        android:hint="Old password"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +67,7 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+        app:layout_constraintTop_toBottomOf="@id/oldPswdText" />
 
     <EditText
         android:id="@+id/confirmPasswordEditText"
@@ -67,32 +85,17 @@
 
     <!-- Submit Button -->
     <Button
-        android:id="@+id/signUpButton"
+        android:id="@+id/changeButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:padding="12dp"
-        android:text="Sign Up"
+        android:text="Submit"
         android:textColor="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordEditText" />
-
-    <!-- Go to Sign-Up Button -->
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:padding="12dp"
-        android:text="Go to Login"
-        android:textColor="@color/orange"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUpButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
