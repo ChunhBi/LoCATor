@@ -101,6 +101,8 @@ class LoCATorRepo private constructor() {
         notifs.clear()
         notifs.addAll(db.getNotifs())
 
+        isManager=db.isManager(auth.currentUser)
+
 
 
     }
@@ -125,7 +127,6 @@ class LoCATorRepo private constructor() {
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
                     activityListener?.onLoginSuccess()
-                    isManager=db.isManager(user)
                 }
 
 
@@ -157,7 +158,6 @@ class LoCATorRepo private constructor() {
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
                     activityListener?.onLoginSuccess()
-                    isManager=db.isManager(user)
                 }
 
 
@@ -281,15 +281,20 @@ class LoCATorRepo private constructor() {
         }
     }
 
-    fun deleteCat(catId:String){
-
+    suspend fun deleteCat(catId:String){
+        try{
+            db.deleteCat(catId)
+        }catch (e:Exception){
+            activityListener?.makeToast(e.message.toString())
+        }
     }
 
     fun addLike(catId:String){
 
     }
 
-    fun deleteLike(catId:String){
+    suspend fun deleteLike(catId:String){
+
 
     }
 

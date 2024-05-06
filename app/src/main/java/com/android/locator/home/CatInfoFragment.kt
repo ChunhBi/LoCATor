@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
+import com.android.locator.UpdateType
 import com.android.locator.databinding.FragmentCatInfoBinding
 import com.android.locator.databinding.FragmentReportBinding
 import kotlinx.coroutines.CoroutineScope
@@ -59,6 +61,27 @@ class CatInfoFragment:Fragment() {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(cat?.createdAt)
                 catInfoDate.text= "Added at: "+formattedDate
+
+                catInfoDelete.setOnClickListener{
+                    //TODO:
+                    if(repo.isManager){
+                        CoroutineScope(Dispatchers.Main).launch{
+                            var id=""
+                            cat?.let { it1 -> id=it1.id }
+                            repo.deleteCat(id)
+                            repo.reloadCats()
+                            repo.notifyUpdate(UpdateType.CAT)
+                            repo.notifyUpdate(UpdateType.WITNESS)
+                            Thread.sleep(1000)
+                            navController.navigate(
+                                CatInfoFragmentDirections.actionCatInfo2CatList()
+                            )
+
+                        }
+                    }else{
+                        Toast.makeText(requireContext(),"Only a manager can delete a cat.", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

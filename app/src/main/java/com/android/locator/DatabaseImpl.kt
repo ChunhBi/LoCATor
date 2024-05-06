@@ -504,11 +504,13 @@ class DatabaseImpl {
     }
 
     suspend fun isManager(user:FirebaseUser?):Boolean{
+        Log.d("MANAGER","db checking...")
         if(user!=null){
             val result = db.collection("manager")
                 .whereEqualTo("uid", user.uid)
                 .get(Source.SERVER)
                 .await()
+            Log.d("MANAGER","result: ${result.size()}")
             return (!result.isEmpty)
         }else{
             throw UserIsNull()
