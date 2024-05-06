@@ -76,8 +76,8 @@ class ReportFragment:Fragment() {
                         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
                             override fun onLocationResult(location: Location) {
                                 // Handle the obtained location
-                                val latitude = location.latitude
-                                val longitude = location.longitude
+//                                val latitude = location.latitude
+//                                val longitude = location.longitude
                                 val position = GeoPoint(location.latitude, location.longitude)
                                 // Do something with latitude and longitude
                                 val newWit=Witness(id="", catId =selectedCatId, geoPoint = position, time = Date())

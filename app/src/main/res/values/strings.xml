@@ -16,4 +16,17 @@
     <string name="notification_channel_name">New witness</string>
     <string name="new_pictures_title">New witness</string>
     <string name="new_pictures_text">has just been witnessed!</string>
+    <string name="change_campus">Change Campus</string>
+    <string name="login">Login</string>
+    <string name="no_account_sign_up">No account? Sign Up</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="have_an_account_log_in">Have an account? Log in</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="submit">Submit</string>
 </resources>

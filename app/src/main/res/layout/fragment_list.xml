@@ -9,25 +9,14 @@
 
     <TextView
         android:id="@+id/all_cats_title"
+        style="@style/titleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/bar_rounded"
-        android:padding="15dp"
+        android:layout_marginTop="32dp"
         android:text="@string/all_cats"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/orange"/>
-
-<!--    <include-->
-<!--        layout="@layout/fragment_list_bar"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cats_recycler_view"

@@ -7,46 +7,17 @@
     android:background="@color/lightest_orange"
     >
 
-    <Button
-        android:id="@+id/add_cat_back_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:padding="0dp"
-        android:text="B"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/orange"
-        android:background="@drawable/btn_circled"
-        android:shadowColor="@color/almostBlack"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/add_cat_img"
         android:layout_width="269dp"
         android:layout_height="291dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="64dp"
+        android:padding="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_add_a_photo_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/baseline_add_a_photo_24"
-        android:padding="50dp"
-        android:scaleType="centerCrop" />
-
-    <Button
-        android:id="@+id/add_cat_submit"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="Add"
-        android:textColor="@color/orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -55,14 +26,42 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/bar_rounded"
         android:ems="10"
         android:hint="@string/name_of_cat"
         android:inputType="text"
         android:textAlignment="center"
         android:textSize="30sp"
+        style="@style/editTextStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_cat_img" />
+
+    <Button
+        android:id="@+id/add_cat_back_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:padding="0dp"
+        android:text="B"
+        style="@style/buttonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/add_cat_submit"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:padding="0dp"
+        android:text="@string/submit"
+        style="@style/buttonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_cat_back_btn" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

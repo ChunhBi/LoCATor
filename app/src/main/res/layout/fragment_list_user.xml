@@ -12,32 +12,24 @@
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/btn_circled"
         android:padding="0dp"
-        android:shadowColor="@color/almostBlack"
         android:text="B"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-
-        android:textStyle="bold"
+        style="@style/buttonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/list_user_title"
+        style="@style/titleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/bar_rounded"
-        android:padding="15dp"
+        android:backgroundTint="@color/orange"
         android:text="@string/notifications"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/orange"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_user_recycler_view"

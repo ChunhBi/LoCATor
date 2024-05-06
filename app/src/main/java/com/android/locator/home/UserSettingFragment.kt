@@ -58,8 +58,8 @@ class UserSettingFragment: Fragment() {
                     UserSettingFragmentDirections.actionUserSetting2ChangePswd()
                 )
             }
-//            settingIconBtn
-//            settingEmail
+            settingEmail.text = repo.getUser()?.email
+            settingIconBtn.text = settingEmail.text.toString().get(0).uppercase()
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.databinding.FragmentHomeBinding
 
@@ -40,6 +41,7 @@ class HomeFragment : Fragment() {
                     HomeFragmentDirections.actionHome2UserSetting()
                 )
             }
+            homeUserBtn.text = LoCATorRepo.getInstance().getUser()?.email.toString().get(0).uppercase()
             homeNavBar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.home_2_list -> {
