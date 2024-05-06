@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.databinding.FragmentListBinding
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class CatListFragment:Fragment() {
     private var _binding: FragmentListBinding?=null
+    val repo=LoCATorRepo.getInstance()
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -50,10 +53,15 @@ class CatListFragment:Fragment() {
                         true
                     }
                     R.id.list_add_cat -> {
+
+                        if(!repo.is_Manager()){
+                            Toast.makeText(requireContext(),"Only a manager can add cats.",Toast.LENGTH_SHORT).show()
+                        }else{
+                            navController.navigate(
+                                CatListFragmentDirections.actionCatList2AddCat()
+                            )
+                        }
                         // Handle Profile button click
-                        navController.navigate(
-                            CatListFragmentDirections.actionCatList2AddCat()
-                        )
                         true
                     }
                     R.id.list_2_witness -> {
@@ -89,9 +97,12 @@ class CatListFragment:Fragment() {
         CoroutineScope(Dispatchers.Main).launch{
             catListViewModel.cats.collect {cats ->
                 binding.catsRecyclerView.adapter = CatListAdapter(cats) {catId ->
-                    findNavController().navigate(
-                        CatListFragmentDirections.actionCatList2CatInfo(catId)
-                    )
+
+                        findNavController().navigate(
+                            CatListFragmentDirections.actionCatList2CatInfo(catId)
+                        )
+
+
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.android.locator.home
 
+import AccessPermissionHelper
 import LocationHelper
 import android.Manifest
 import android.app.Activity
@@ -73,6 +74,9 @@ class ReportFragment:Fragment() {
                 }else{
                     Log.d("SELECT","reporting cat: "+selectedCatId)
 
+                        if(!AccessPermissionHelper.isLocationPermissionGranted()){
+                            AccessPermissionHelper.requestLocationPermission()
+                        }
                         val locationHelper = LocationHelper(requireContext())
                         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
                             override fun onLocationResult(location: Location) {
@@ -118,6 +122,7 @@ class ReportFragment:Fragment() {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(requireContext(),"Camera permission denied.",Toast.LENGTH_SHORT).show()
+                    AccessPermissionHelper.requestCameraPermission()
 
                 } else {
                     val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
