@@ -1,6 +1,7 @@
 package com.android.locator
 
 import android.content.Context
+import android.content.UriPermission
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -9,7 +10,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-
+enum class UpdateType {
+    WITNESS,
+    CAT,
+}
+interface UpdateListener{
+    fun update(type:UpdateType)
+}
 class LoCATorRepo private constructor() {
 
     companion object {
@@ -30,7 +37,25 @@ class LoCATorRepo private constructor() {
     val likes:MutableList<String> = mutableListOf()
     val notifs:MutableList<String> = mutableListOf()
 
+    var isManager=false
+
     var activityListener:MainActivityListener?=null
+
+    private val listeners = mutableListOf<UpdateListener>()
+
+    fun registerListener(listener: UpdateListener) {
+        listeners.add(listener)
+    }
+
+    fun unregisterListener(listener: UpdateListener) {
+        listeners.remove(listener)
+    }
+
+    fun notifyUpdate(type: UpdateType) {
+        listeners.forEach { it.update(type) }
+    }
+
+
 
     fun setLoginListener(listener: MainActivityListener) {
         activityListener = listener
@@ -95,6 +120,7 @@ class LoCATorRepo private constructor() {
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
                     activityListener?.onLoginSuccess()
+                    isManager=db.isManager(user)
                 }
 
 
@@ -126,6 +152,7 @@ class LoCATorRepo private constructor() {
                         Log.e(TAG, "Error initializing all database data: ${e.message}")
                     }
                     activityListener?.onLoginSuccess()
+                    isManager=db.isManager(user)
                 }
 
 
@@ -235,4 +262,35 @@ class LoCATorRepo private constructor() {
     suspend fun upload_witness_img(witid:String,img:Bitmap){
         db.uploadWitImg_(witid,img)
     }
+
+    fun is_Manager():Boolean{
+        return isManager
+    }
+
+    suspend fun add_cat(cat:Cat,bitmap: Bitmap){
+        try{
+            val newCat=db.addCatIfNameNotExist(cat)
+            db.uploadCatImg(newCat,bitmap)
+        }catch (e:Exception){
+            e.message?.let { activityListener?.makeToast(it) }
+        }
+    }
+
+    fun deleteCat(catId:String){
+
+    }
+
+    fun addLike(catId:String){
+
+    }
+
+    fun deleteLike(catId:String){
+
+    }
+
+    fun changePwd(oldPwd:String,newPwd:String){
+
+    }
+
+
 }

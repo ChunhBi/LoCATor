@@ -1,5 +1,6 @@
 package com.android.locator
 
+import AccessPermissionHelper
 import LocationHelper
 import android.content.Context
 import android.content.Intent
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         super.onCreate(savedInstanceState)
 
         BitmapHelper.set_Context(this)
+        AccessPermissionHelper.setActivity(this)
         //LocationHelper.set_Context(this)
 
         setContentView(R.layout.main_layout)
@@ -124,6 +126,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         showInfo(user)
         Toast.makeText(this,"Welcome! ${user?.email}",Toast.LENGTH_SHORT).show()
         val homeFragment=Home()
+        repo.registerListener(homeFragment)
         setFragmentToContainer(homeFragment)
         Log.d("MAIN","set to homeFragment")
         startWorkManager()

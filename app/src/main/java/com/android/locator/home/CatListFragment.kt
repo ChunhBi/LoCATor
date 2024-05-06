@@ -79,8 +79,7 @@ class CatListFragment:Fragment() {
             }
         }
     }
-
-    /*
+/*
     override fun onResume() {
         super.onResume()
         CoroutineScope(Dispatchers.Main).launch{
@@ -95,5 +94,6 @@ class CatListFragment:Fragment() {
 
     }
 
-     */
+ */
+
 }

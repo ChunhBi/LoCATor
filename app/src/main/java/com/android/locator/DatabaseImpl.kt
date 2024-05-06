@@ -68,21 +68,23 @@ class DatabaseImpl {
         catRef.update("image", FieldValue.arrayUnion(imgPath)).await()
     }
 
-    suspend fun uploadCatImg(catId: String, resId: Int, context: Context) {
+    suspend fun uploadCatImg(catId: String, bitmap: Bitmap) {
 
             assertCatIdExists(catId)
 
             val imgPath="cats/$catId${generateTimestampString()}$.jpg"
 
-            val inputStream = context.resources.openRawResource(resId)
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            val byteArray = stream.toByteArray()
+
 
             val storageRef = storage.reference.child(imgPath)
 
-            storageRef.putStream(inputStream).await()
+            storageRef.putBytes(byteArray)
             addImgPath(catId,imgPath)
             //TODO: Handle exeptions
             fetchCatsFromFirestore()
-
 
     }
 
@@ -274,14 +276,14 @@ class DatabaseImpl {
 
 
 
-    suspend fun addCatIfNameNotExist(cat: Cat) {
+    suspend fun addCatIfNameNotExist(cat: Cat):String {
         assertCatNameNotExistsInCampus(cat.name,cat.campus)
-        addCat(cat)
+        return addCat(cat)
     }
 
 
 
-    suspend private fun addCat(cat: Cat) {
+    suspend private fun addCat(cat: Cat):String {
         //只需要name和campus，其他的可以留空。
 
 
@@ -294,13 +296,11 @@ class DatabaseImpl {
                 "createdAt" to Date()
             )
 
-            catsCollection.add(catData)
-                .addOnSuccessListener { documentReference ->
-                }
-                .addOnFailureListener { exception ->
-                }
+            val docRef=catsCollection.add(catData).await()
             fetchCatsFromFirestore()
             Log.d("DBImpl", "Data updated after adding")
+        return docRef.id
+
 
     }
 
