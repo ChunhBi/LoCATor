@@ -54,6 +54,12 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
     private var status=0
 
+    override fun onResume() {
+        super.onResume()
+        loadData()
+        drawLatestMarkers()
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,13 +87,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         }
     }
 
-    override fun onMapReady(p0: GoogleMap) {
-        // Bind the GoogleMap instance
-        map = p0
-        map?.mapType = GoogleMap.MAP_TYPE_TERRAIN
-        // Add markers to the map or perform other map operations
+    fun loadData(){
 
-        lifecycleScope.launch{
             try {
                 wits = repo.getWits()
                 // Log the size of wits to check if data is fetched
@@ -104,14 +105,22 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                     latestWitness?.let { latestWitnesses.add(it) }
                 }
 
-                // Add markers to the map for each wit
-                drawLatestMarkers()
             } catch (e: Exception) {
                 // Log the exception if there is any error
                 Log.e("MyFragment", "Error fetching wits or adding markers: ${e.message}")
             }
 
-        }
+
+    }
+
+    override fun onMapReady(p0: GoogleMap) {
+        // Bind the GoogleMap instance
+        map = p0
+        map?.mapType = GoogleMap.MAP_TYPE_TERRAIN
+        // Add markers to the map or perform other map operations
+
+        loadData()
+        drawLatestMarkers()
 
 
         //addMarkersToMap()
@@ -201,9 +210,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
         if(status==0){
             drawMarkersOfACat(tag)
-            status=1
         }else{
-            status=0
             drawLatestMarkers()
         }
 
@@ -223,6 +230,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
             posList.add(convertGeoPointToLatLng(it.geoPoint))
         }
         map?.let { drawPolyline(it,posList, R.color.orange, 10f) }
+        status=1
     }
 
     fun drawLatestMarkers(){
@@ -230,6 +238,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         last10.forEach { wit ->
             addMarkersToMap(wit)
         }
+        status=0
     }
 
     fun getSortedCatWits(catId:String): List<Witness> {

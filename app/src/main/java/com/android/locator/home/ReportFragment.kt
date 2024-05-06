@@ -55,6 +55,8 @@ class ReportFragment:Fragment() {
         return root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.apply {
@@ -89,6 +91,10 @@ class ReportFragment:Fragment() {
                                         repo.upload_witness_img(newWitId,bitmap)
 
                                         Toast.makeText(requireContext(),"Witness reported",Toast.LENGTH_SHORT).show()
+                                        repo.reloadWitnesses()
+                                        navController.navigate(
+                                            ReportFragmentDirections.actionReport2Home()
+                                        )
 
                                     }
                                 }
@@ -97,7 +103,7 @@ class ReportFragment:Fragment() {
                             }
 
                             override fun onLocationUnavailable() {
-                                // Handle case when location is unavailable or permission is denied
+                                Toast.makeText(requireContext(),"Location unavailable",Toast.LENGTH_SHORT).show()
                             }
                         })
 

@@ -36,6 +36,7 @@ interface MainActivityListener{
     //fun startWorkManager()
 
     fun logOut()
+
 }
 
 
@@ -86,6 +87,17 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         setFragmentToContainer(loginFragment)
 
 
+        /*
+        supportFragmentManager.addOnBackStackChangedListener {
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+            if (fragment is Home) {
+                fragment.loadData()
+                fragment.drawLatestMarkers()
+                Log.d("RELOAD","Home reload called.")
+            }
+        }
+
+         */
 
 
 
@@ -133,6 +145,8 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         setFragmentToContainer(loginFragment)
         cancelWorkManager()
     }
+
+
 
 //    override fun userLogin(email: String, pwd: String) {
 //        if(email==null||pwd==null||email.equals("")||pwd.equals("")){

@@ -47,6 +47,11 @@ class LoCATorRepo private constructor() {
         return auth.currentUser
     }
 
+    suspend fun reloadWitnesses(){
+        db.fetchWitsFromFirestore()
+        witnesses.clear()
+        witnesses.addAll(db.getAllWits())
+    }
     suspend fun initAllDbData(){
         db.fetchWitsFromFirestore()
         db.fetchCatsFromFirestore()
