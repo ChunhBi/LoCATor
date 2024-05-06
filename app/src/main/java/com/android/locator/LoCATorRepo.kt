@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.UriPermission
 import android.graphics.Bitmap
 import android.util.Log
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
@@ -300,6 +301,29 @@ class LoCATorRepo private constructor() {
 
     fun changePwd(oldPwd:String,newPwd:String){
 
+        val currentUser=auth.currentUser
+
+
+        val credential = EmailAuthProvider.getCredential(currentUser!!.email!!, oldPwd)
+
+
+        currentUser.reauthenticate(credential)
+            .addOnCompleteListener { reauthTask ->
+                if (reauthTask.isSuccessful) {
+
+
+                    currentUser.updatePassword(newPwd)
+                        .addOnCompleteListener { updatePasswordTask ->
+                            if (updatePasswordTask.isSuccessful) {
+                                activityListener?.makeToast("Password changed successfully.")
+                            } else {
+                                activityListener?.makeToast(updatePasswordTask.exception?.message.toString())
+                            }
+                        }
+                } else {
+
+                }
+            }
     }
 
 
