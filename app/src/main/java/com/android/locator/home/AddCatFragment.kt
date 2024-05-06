@@ -79,9 +79,10 @@ class AddCatFragment:Fragment() {
                     val newCat= Cat(campus = "BU", createdAt = Date(), name = catName,id="", images = mutableListOf())
                     CoroutineScope(Dispatchers.Main).launch {
                         repo.add_cat(newCat, bitmap)
+                        repo.reloadCats()
+                        repo.notifyUpdate(UpdateType.CAT)
                         Thread.sleep(1000)
                         Toast.makeText(requireContext(),"Cat added.",Toast.LENGTH_SHORT).show()
-                        repo.notifyUpdate(UpdateType.CAT)
                         navController.navigate(
                             AddCatFragmentDirections.actionAddCat2CatList()
                         )

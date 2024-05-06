@@ -25,6 +25,7 @@ class CatListFragment:Fragment() {
         }
 
     private val catListViewModel: CatListViewModel by viewModels()
+    private lateinit var adapter: CatListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,19 +68,22 @@ class CatListFragment:Fragment() {
             }
         }
 
+
+
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 catListViewModel.cats.collect {cats ->
-                    binding.catsRecyclerView.adapter = CatListAdapter(cats) {catId ->
+                    adapter = CatListAdapter(cats){catId ->
                         findNavController().navigate(
                             CatListFragmentDirections.actionCatList2CatInfo(catId)
                         )
                     }
+                    binding.catsRecyclerView.adapter = adapter
                 }
             }
         }
     }
-/*
+
     override fun onResume() {
         super.onResume()
         CoroutineScope(Dispatchers.Main).launch{
@@ -94,6 +98,6 @@ class CatListFragment:Fragment() {
 
     }
 
- */
+
 
 }
