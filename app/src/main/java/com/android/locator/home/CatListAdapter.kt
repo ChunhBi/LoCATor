@@ -23,6 +23,7 @@ class CatHolder (
         val img=cat.images[0]
         binding.listItemCatName.text = cat.name
         binding.listItemCatInfo.text = cat.campus
+
         CoroutineScope(Dispatchers.Main).launch {
             // Call getCatImg in a coroutine
             val catImage = repo.getCatFirstImg(cat.id)
@@ -30,13 +31,11 @@ class CatHolder (
             // Set the fetched image on the ImageView
             if(catImage!=null) {
                 binding.listItemCatImg.setImageBitmap(BitmapHelper.addRoundedCornersToBitmap(catImage,15f))
-
-
             }
-
-
         }
-
+        binding.listItemLikeImg.setOnClickListener {
+            // TODO: add this cat to user's like list
+        }
         binding.root.setOnClickListener {
             onCatClicked(cat.id)
         }
