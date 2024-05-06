@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
+import com.android.locator.UpdateListener
+import com.android.locator.UpdateType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class CatListViewModel : ViewModel() {
+class CatListViewModel : ViewModel(),UpdateListener {
 //    private val catRepository = Cat.get()
 
     private val _cats: MutableStateFlow<List<Cat>> = MutableStateFlow(emptyList())
@@ -28,9 +30,18 @@ class CatListViewModel : ViewModel() {
         val cat1 = Cat("Fluffy", "123", emptyList(), "https://cat-images.com/fluffy", Date())
         val cat2 = Cat("Whiskers", "456",  emptyList(), "https://cat-images.com/whiskers",Date())
         val cat3 = Cat("Mittens", "789",  emptyList(), "https://cat-images.com/mittens",Date())
+        repo.registerListener(this)
 
         //_cats.value = listOf(cat1, cat2, cat3)
         _cats.value = cats
+
+    }
+
+    override fun update(type: UpdateType) {
+        if(type==UpdateType.CAT){
+            val cats=repo.get_Cats()
+            _cats.value = cats
+        }
 
     }
 //    suspend fun addCrime(crime: Crime) {

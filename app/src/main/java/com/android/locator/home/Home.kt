@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.locator.LoCATorRepo
 import com.android.locator.R
+import com.android.locator.UpdateListener
+import com.android.locator.UpdateType
 import com.android.locator.Witness
 import com.android.locator.databinding.HomeBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -39,7 +41,7 @@ import java.util.Date
 import java.util.Locale
 
 
-class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
+class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListener{
     private var _binding: HomeBinding? = null
 
 
@@ -261,8 +263,13 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         googleMap.addPolyline(polylineOptions)
     }
 
-
-
+    override fun update(type: UpdateType) {
+        if(type==UpdateType.WITNESS){
+            loadData()
+            map?.clear()
+            drawLatestMarkers()
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.android.locator.home
 
+import AccessPermissionHelper
 import LocationHelper
 import android.Manifest
 import android.app.Activity
@@ -24,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.android.locator.LoCATorRepo
+import com.android.locator.UpdateType
 import com.android.locator.Witness
 import com.android.locator.databinding.FragmentReportBinding
 import com.google.firebase.firestore.GeoPoint
@@ -72,6 +74,9 @@ class ReportFragment:Fragment() {
                 }else{
                     Log.d("SELECT","reporting cat: "+selectedCatId)
 
+                        if(!AccessPermissionHelper.isLocationPermissionGranted()){
+                            AccessPermissionHelper.requestLocationPermission()
+                        }
                         val locationHelper = LocationHelper(requireContext())
                         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
                             override fun onLocationResult(location: Location) {
@@ -89,9 +94,11 @@ class ReportFragment:Fragment() {
                                         val bitmap: Bitmap = drawable.bitmap
                                         // Use the bitmap as needed
                                         repo.upload_witness_img(newWitId,bitmap)
-
+                                        Thread.sleep(1000)
                                         Toast.makeText(requireContext(),"Witness reported",Toast.LENGTH_SHORT).show()
+
                                         repo.reloadWitnesses()
+                                        repo.notifyUpdate(UpdateType.WITNESS)
                                         navController.navigate(
                                             ReportFragmentDirections.actionReport2Home()
                                         )
@@ -115,6 +122,7 @@ class ReportFragment:Fragment() {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(requireContext(),"Camera permission denied.",Toast.LENGTH_SHORT).show()
+                    AccessPermissionHelper.requestCameraPermission()
 
                 } else {
                     val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

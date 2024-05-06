@@ -1,15 +1,23 @@
 package com.android.locator
 
 import android.content.Context
+import android.content.UriPermission
 import android.graphics.Bitmap
 import android.util.Log
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-
+enum class UpdateType {
+    WITNESS,
+    CAT,
+}
+interface UpdateListener{
+    fun update(type:UpdateType)
+}
 class LoCATorRepo private constructor() {
 
     companion object {
@@ -30,7 +38,25 @@ class LoCATorRepo private constructor() {
     val likes:MutableList<String> = mutableListOf()
     val notifs:MutableList<String> = mutableListOf()
 
+    var isManager=false
+
     var activityListener:MainActivityListener?=null
+
+    private val listeners = mutableListOf<UpdateListener>()
+
+    fun registerListener(listener: UpdateListener) {
+        listeners.add(listener)
+    }
+
+    fun unregisterListener(listener: UpdateListener) {
+        listeners.remove(listener)
+    }
+
+    fun notifyUpdate(type: UpdateType) {
+        listeners.forEach { it.update(type) }
+    }
+
+
 
     fun setLoginListener(listener: MainActivityListener) {
         activityListener = listener
@@ -52,6 +78,11 @@ class LoCATorRepo private constructor() {
         witnesses.clear()
         witnesses.addAll(db.getAllWits())
     }
+    suspend fun reloadCats(){
+        db.fetchCatsFromFirestore()
+        cats.clear()
+        cats.addAll(db.getAllCats())
+    }
     suspend fun initAllDbData(){
         db.fetchWitsFromFirestore()
         db.fetchCatsFromFirestore()
@@ -70,6 +101,8 @@ class LoCATorRepo private constructor() {
 
         notifs.clear()
         notifs.addAll(db.getNotifs())
+
+        isManager=db.isManager(auth.currentUser)
 
 
 
@@ -235,4 +268,67 @@ class LoCATorRepo private constructor() {
     suspend fun upload_witness_img(witid:String,img:Bitmap){
         db.uploadWitImg_(witid,img)
     }
+
+    fun is_Manager():Boolean{
+        return isManager
+    }
+
+    suspend fun add_cat(cat:Cat,bitmap: Bitmap){
+        try{
+            val newCat=db.addCatIfNameNotExist(cat)
+            db.uploadCatImg(newCat,bitmap)
+        }catch (e:Exception){
+            e.message?.let { activityListener?.makeToast(it) }
+        }
+    }
+
+    suspend fun deleteCat(catId:String){
+        try{
+            db.deleteCat(catId)
+        }catch (e:Exception){
+            activityListener?.makeToast(e.message.toString())
+        }
+    }
+
+    fun addLike(catId:String){
+
+    }
+
+    suspend fun deleteLike(catId:String){
+
+
+    }
+
+    fun changePwd(oldPwd:String,newPwd:String){
+
+        val currentUser=auth.currentUser
+
+
+        val credential = EmailAuthProvider.getCredential(currentUser!!.email!!, oldPwd)
+
+
+        currentUser.reauthenticate(credential)
+            .addOnCompleteListener { reauthTask ->
+                if (reauthTask.isSuccessful) {
+
+
+                    currentUser.updatePassword(newPwd)
+                        .addOnCompleteListener { updatePasswordTask ->
+                            if (updatePasswordTask.isSuccessful) {
+                                activityListener?.makeToast("Password changed successfully.")
+                            } else {
+                                activityListener?.makeToast(updatePasswordTask.exception?.message.toString())
+                            }
+                        }
+                } else {
+
+                }
+            }
+    }
+
+    fun getEmail():String?{
+        return auth.currentUser?.email
+    }
+
+
 }
