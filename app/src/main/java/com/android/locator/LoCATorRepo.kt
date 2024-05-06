@@ -326,5 +326,9 @@ class LoCATorRepo private constructor() {
             }
     }
 
+    fun getEmail():String?{
+        return auth.currentUser?.email
+    }
+
 
 }

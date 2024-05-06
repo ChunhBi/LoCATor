@@ -30,6 +30,7 @@ class UserSettingFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.apply {
+            settingEmail.text=repo.getEmail()
             settingBackBtn.setOnClickListener {
                 navController.navigate(
                     UserSettingFragmentDirections.actionUserSetting2Home()

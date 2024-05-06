@@ -32,7 +32,7 @@ class ChangePswdFragment:Fragment() {
             val pwd=binding!!.passwordEditText.text.toString()
             val pwd2=binding!!.confirmPasswordEditText.text.toString()
             val oldPwd=binding!!.oldPswdText.text.toString()
-            if(pwd.equals(pwd2)){// TODO: finish after changePassword() is implemented
+            if(pwd.equals(pwd2)){
                 repo.changePwd(oldPwd,pwd)
             }
             else{
