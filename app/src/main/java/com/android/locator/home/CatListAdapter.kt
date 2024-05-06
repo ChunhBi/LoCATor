@@ -31,7 +31,6 @@ class CatHolder (
             if(catImage!=null) {
                 binding.listItemCatImg.setImageBitmap(BitmapHelper.addRoundedCornersToBitmap(catImage,15f))
 
-
             }
 
 

@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.locator.R
 import com.android.locator.databinding.FragmentListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CatListFragment:Fragment() {
@@ -65,7 +67,7 @@ class CatListFragment:Fragment() {
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 catListViewModel.cats.collect {cats ->
                     binding.catsRecyclerView.adapter = CatListAdapter(cats) {catId ->
@@ -77,4 +79,21 @@ class CatListFragment:Fragment() {
             }
         }
     }
+
+    /*
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.Main).launch{
+            catListViewModel.cats.collect {cats ->
+                binding.catsRecyclerView.adapter = CatListAdapter(cats) {catId ->
+                    findNavController().navigate(
+                        CatListFragmentDirections.actionCatList2CatInfo(catId)
+                    )
+                }
+            }
+        }
+
+    }
+
+     */
 }

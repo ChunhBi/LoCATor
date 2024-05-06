@@ -54,12 +54,6 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
     private var status=0
 
-    override fun onResume() {
-        super.onResume()
-        loadData()
-        drawLatestMarkers()
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -266,6 +260,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         // Add the polyline to the map
         googleMap.addPolyline(polylineOptions)
     }
+
 
 
 

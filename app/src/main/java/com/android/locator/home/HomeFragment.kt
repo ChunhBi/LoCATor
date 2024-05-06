@@ -1,6 +1,7 @@
 package com.android.locator.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
         return root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
@@ -65,7 +67,9 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        Log.d("HOME_FRAG","home_fragment_")
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
