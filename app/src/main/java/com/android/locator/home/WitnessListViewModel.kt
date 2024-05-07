@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.android.locator.LoCATorRepo
 import com.android.locator.Witness
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class WitnessListViewModel : ViewModel() {
@@ -23,6 +26,8 @@ class WitnessListViewModel : ViewModel() {
 //        val notifications=filterWitnessesById(wits,notifs)
 //        Log.d("WitList","num of notif_wit_id: ${notifs.size}")
 //        Log.d("WitList","num of notifs: ${notifications.size}")
+        CoroutineScope(Dispatchers.Main).launch{ repo.reloadWitnesses()}
+        CoroutineScope(Dispatchers.Main).launch{ repo.reloadNotifications()}
         val notifications = repo.get_Notifications()
 
         _witnesses.value = notifications

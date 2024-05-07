@@ -53,7 +53,6 @@ class CatListFragment:Fragment() {
                         true
                     }
                     R.id.list_add_cat -> {
-
                         if(!repo.is_Manager()){
                             Toast.makeText(requireContext(),"Only a manager can add cats.",Toast.LENGTH_SHORT).show()
                         }else{

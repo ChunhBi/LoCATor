@@ -91,9 +91,14 @@ class LoCATorRepo private constructor() {
         likes.clear()
         likes.addAll(db.getLikes())
         activityListener?.restartWorkManager()
-
-
     }
+
+    suspend fun reloadNotifications(){
+        db.fetchNotificationsFromFirebase(auth.currentUser)
+        notifs.clear()
+        notifs.addAll(db.getNotifs())
+    }
+
     suspend fun initAllDbData(){
         campus=db.getUserCampus(auth.currentUser)
         Log.d("CAMPUS","Your campus: "+campus)
@@ -267,8 +272,6 @@ class LoCATorRepo private constructor() {
         scope.launch(Dispatchers.IO) {
             auth.currentUser?.let { db.addNotification(witid, it) }
         }
-
-
     }
 
     fun get_Notifs():List<String>{

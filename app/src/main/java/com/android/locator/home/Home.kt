@@ -139,7 +139,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         map?.setOnMarkerClickListener(this)
         map?.setOnMapClickListener {
             map?.clear()
-            drawLatestMarkers()
+            CoroutineScope(Dispatchers.Main).launch{ repo.reloadWitnesses()}
+            update(UpdateType.WITNESS, "")
         }
 
         refresh()

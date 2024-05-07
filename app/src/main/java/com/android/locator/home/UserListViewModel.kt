@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
 import com.android.locator.Witness
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,10 +40,12 @@ class UserListViewModel(private val type: Int) : ViewModel() {
     init {
         when (type) {
             0 -> { // witnesses
+                CoroutineScope(Dispatchers.Main).launch{ repo.reloadWitnesses()}
                 val witnesses = repo.getWits()
                 _witnesses.value = witnesses
             }
-            1 -> {
+            1 -> { // likes
+                CoroutineScope(Dispatchers.Main).launch{ repo.reloadLikes()}
                 val likes = repo.get_Likes()
                 val cats = mutableListOf<Cat>()
                 for (catId in likes) {
@@ -52,7 +56,8 @@ class UserListViewModel(private val type: Int) : ViewModel() {
                 }
                 _likes.value = cats
             }
-            2 -> {
+            2 -> { // notifications
+                CoroutineScope(Dispatchers.Main).launch{ repo.reloadWitnesses()}
                 val notifications = repo.get_Notifications()
                 _notifications.value = notifications
             }
