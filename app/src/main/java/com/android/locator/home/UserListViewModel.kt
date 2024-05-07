@@ -1,11 +1,10 @@
 package com.android.locator.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
-import com.android.locator.UpdateListener
-import com.android.locator.UpdateType
 import com.android.locator.Witness
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +14,7 @@ class UserListViewModel(private val type: Int) : ViewModel() {
     private val _notifications: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())
     private val _witnesses: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())
     private val _likes: MutableStateFlow<List<Cat>> = MutableStateFlow(emptyList())
+    private val _campuses: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     private val repo=LoCATorRepo.getInstance()
     val witness : StateFlow<List<Witness>>
         get() {
@@ -27,6 +27,11 @@ class UserListViewModel(private val type: Int) : ViewModel() {
     val notifications : StateFlow<List<Witness>>
         get() {
             return _notifications.asStateFlow()
+        }
+
+    val campuses : StateFlow<List<String>>
+        get() {
+            return _campuses.asStateFlow()
         }
     init {
         when (type) {
@@ -45,21 +50,20 @@ class UserListViewModel(private val type: Int) : ViewModel() {
                 }
                 _likes.value = cats
             }
-            1 -> {
-                val likes = repo.get_Notifs()
-                val nots = mutableListOf<Witness>()
-                for (witId in nots) {// TODO: finish after getWitnessById is implemented
-//                    repo.findCatById(catId).let {
-//                        if (it != null)
-//                            cats.add(it)
-//                    }
-                }
-                _notifications.value = nots
+            2 -> {
+                val notifications = repo.get_Notifications()
+                _notifications.value = notifications
+            }
+            3-> {
+                // TODO: get campus
             }
         }
     }
 
-
+    fun filterWitnessesById(witnesses: List<Witness>, witnessIds: List<String>): List<Witness> {
+        // Filter the list of witnesses based on the IDs present in the list of witness IDs
+        return witnesses.filter { it.id in witnessIds }
+    }
 }
 
 class UserListViewModelFactory(

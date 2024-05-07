@@ -59,7 +59,12 @@ class CatInfoFragment:Fragment() {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(cat?.createdAt)
                 catInfoDate.text= "Added at: "+formattedDate
-
+                catInfoHistory.setOnClickListener {
+                    cat?.let { it1 -> repo.displayHistory(it1.id) }
+                    findNavController().navigate(
+                        CatInfoFragmentDirections.actionCatInfo2Home()
+                    )
+                }
                 catInfoDelete.setOnClickListener{
                     //TODO:
                     if(repo.isManager){

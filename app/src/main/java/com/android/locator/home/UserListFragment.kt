@@ -44,6 +44,7 @@ class UserListFragment():Fragment() {
                 0 -> "My Witnesses"
                 1 -> "My Likes"
                 2 -> "My Notifications"
+                3 -> "Campus List"
                 else -> ""
             }
             listUserBackBtn.setOnClickListener {
@@ -66,6 +67,11 @@ class UserListFragment():Fragment() {
                     }
                     2 -> userListViewModel.notifications.collect { not_witnesses ->
                         binding.listUserRecyclerView.adapter = WitnessListAdapter(not_witnesses)
+                    }
+                    3 -> userListViewModel.campuses.collect { campuses ->
+                        binding.listUserRecyclerView.adapter = CampusListAdapter(campuses) {
+                            // TODO: set campus in repo
+                        }
                     }
                 }
             }

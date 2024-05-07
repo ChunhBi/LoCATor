@@ -97,6 +97,9 @@
         <argument
             android:name="catId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_catInfo_2_home"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/userListFragment"
