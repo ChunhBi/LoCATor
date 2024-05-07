@@ -18,19 +18,8 @@ class CatListViewModel : ViewModel(),UpdateListener {
     val cats : StateFlow<List<Cat>>
         get() = _cats.asStateFlow()
     init {
-//        viewModelScope.launch {
-//            catRepository.getCrimes().collect{
-//                _cats.value = it
-//            }
-//        }
         val cats=repo.get_Cats()
-
-        val cat1 = Cat("Fluffy", "123", emptyList(), "https://cat-images.com/fluffy", Date())
-        val cat2 = Cat("Whiskers", "456",  emptyList(), "https://cat-images.com/whiskers",Date())
-        val cat3 = Cat("Mittens", "789",  emptyList(), "https://cat-images.com/mittens",Date())
         repo.registerListener(this)
-
-        //_cats.value = listOf(cat1, cat2, cat3)
         _cats.value = cats
 
     }
@@ -42,7 +31,4 @@ class CatListViewModel : ViewModel(),UpdateListener {
         }
 
     }
-//    suspend fun addCrime(crime: Crime) {
-//        crimeRepository.addCrime(crime)
-//    }
 }

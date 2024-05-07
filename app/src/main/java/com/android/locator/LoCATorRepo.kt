@@ -264,6 +264,9 @@ class LoCATorRepo private constructor() {
     fun get_Notifs():List<String>{
         return notifs
     }
+    fun get_Notifications():List<Witness>{
+        return witnesses.filter { it.id in notifs }
+    }
 
     fun findCatNameById(catId: String): String? {
         for (cat in cats) {

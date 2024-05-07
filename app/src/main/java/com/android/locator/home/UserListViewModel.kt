@@ -1,5 +1,6 @@
 package com.android.locator.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.android.locator.Cat
@@ -50,15 +51,8 @@ class UserListViewModel(private val type: Int) : ViewModel() {
                 _likes.value = cats
             }
             2 -> {
-                val likes = repo.get_Notifs()
-                val nots = mutableListOf<Witness>()
-                for (witId in nots) {// TODO: finish after getWitnessById is implemented
-//                    repo.findCatById(catId).let {
-//                        if (it != null)
-//                            cats.add(it)
-//                    }
-                }
-                _notifications.value = nots
+                val notifications = repo.get_Notifications()
+                _notifications.value = notifications
             }
             3-> {
                 // TODO: get campus
@@ -66,7 +60,10 @@ class UserListViewModel(private val type: Int) : ViewModel() {
         }
     }
 
-
+    fun filterWitnessesById(witnesses: List<Witness>, witnessIds: List<String>): List<Witness> {
+        // Filter the list of witnesses based on the IDs present in the list of witness IDs
+        return witnesses.filter { it.id in witnessIds }
+    }
 }
 
 class UserListViewModelFactory(
