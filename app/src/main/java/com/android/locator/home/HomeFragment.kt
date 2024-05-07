@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.locator.LoCATorRepo
 import com.android.locator.R
+import com.android.locator.UpdateType
 import com.android.locator.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

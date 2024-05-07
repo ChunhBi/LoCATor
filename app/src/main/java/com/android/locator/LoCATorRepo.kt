@@ -12,10 +12,10 @@ enum class UpdateType {
     WITNESS,
     CAT,
     LIKE,
-    SHOW_SPECIFIC_CAT
+    SHOW_SPECIFIC_CAT,
 }
 interface UpdateListener{
-    fun update(type:UpdateType)
+    fun update(type:UpdateType, para: String)
 }
 class LoCATorRepo private constructor() {
 
@@ -45,11 +45,6 @@ class LoCATorRepo private constructor() {
 
     private val listeners = mutableListOf<UpdateListener>()
 
-
-    fun displayHistory(catId: String) {
-        // TODO: call the update of home to display this cat history
-    }
-
     fun registerListener(listener: UpdateListener) {
         listeners.add(listener)
     }
@@ -58,11 +53,12 @@ class LoCATorRepo private constructor() {
         listeners.remove(listener)
     }
 
-    fun notifyUpdate(type: UpdateType) {
-        listeners.forEach { it.update(type) }
+    fun notifyUpdate(type: UpdateType, para: String) {
+        listeners.forEach { it.update(type, para) }
     }
-
-
+    fun notifyUpdate(type: UpdateType) {
+        listeners.forEach { it.update(type, "") }
+    }
 
     fun setLoginListener(listener: MainActivityListener) {
         activityListener = listener

@@ -24,7 +24,7 @@ class CatListViewModel : ViewModel(),UpdateListener {
 
     }
 
-    override fun update(type: UpdateType) {
+    override fun update(type: UpdateType, para:String) {
         if(type==UpdateType.CAT||type==UpdateType.LIKE){
             val cats=repo.get_Cats()
             _cats.value = cats

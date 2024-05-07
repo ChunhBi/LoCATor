@@ -3,12 +3,14 @@ package com.android.locator.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
 import com.android.locator.Witness
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class UserListViewModel(private val type: Int) : ViewModel() {
     private val _notifications: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())
@@ -55,7 +57,9 @@ class UserListViewModel(private val type: Int) : ViewModel() {
                 _notifications.value = notifications
             }
             3-> {
-                // TODO: get campus
+                viewModelScope.launch {
+                    _campuses.value = repo.getAllCampuses()
+                }
             }
         }
     }

@@ -43,8 +43,6 @@ import java.util.Date
 
 class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListener{
     private var _binding: HomeBinding? = null
-
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -83,7 +81,6 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            homeRefreshBtn.setOnClickListener { refresh() }
         }
     }
 
@@ -116,24 +113,26 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         // Bind the GoogleMap instance
         map = p0
         map?.mapType = GoogleMap.MAP_TYPE_TERRAIN
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return
-//        }
-        map?.setMyLocationEnabled(true)
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            map?.setMyLocationEnabled(false)
+        }
+        else {
+            map?.setMyLocationEnabled(true)
+        }
 
         loadData()
         drawLatestMarkers()
@@ -232,12 +231,6 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         marker?.tag=tag
     }
 
-
-
-
-
-
-
     override fun onMarkerClick(marker: Marker): Boolean {
         // Retrieve the ID from the marker's tag property
         val tag=marker.tag.toString()
@@ -250,9 +243,6 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         }else{
             drawLatestMarkers()
         }
-
-
-
 
         // Return false to allow the default behavior (e.g., displaying an info window)
         return false
@@ -308,7 +298,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         googleMap.addPolyline(polylineOptions)
     }
 
-    override fun update(type: UpdateType) {
+    override fun update(type: UpdateType, para:String) {
         if(type==UpdateType.WITNESS){
             loadData()
             map?.clear()
@@ -316,6 +306,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         }
         else if (type==UpdateType.SHOW_SPECIFIC_CAT) {
             // TODO: show history of a selected cat, should add a parameter catid
+            map?.clear()
+            drawMarkersOfACat(para)
         }
     }
 
