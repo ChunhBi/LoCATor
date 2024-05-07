@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
-import com.android.locator.UpdateListener
-import com.android.locator.UpdateType
 import com.android.locator.Witness
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

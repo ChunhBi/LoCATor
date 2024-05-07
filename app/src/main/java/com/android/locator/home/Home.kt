@@ -260,6 +260,9 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             map?.clear()
             drawLatestMarkers()
         }
+        else if (type==UpdateType.SHOW_SPECIFIC_CAT) {
+            // TODO: show history of a selected cat, should add a parameter catid
+        }
     }
 
 

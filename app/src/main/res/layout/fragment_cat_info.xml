@@ -94,7 +94,19 @@
         android:text="@string/delete"
         style="@style/buttonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cat_info_back" />
+
+    <Button
+        android:id="@+id/cat_info_history"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/history"
+        style="@style/buttonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cat_info_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

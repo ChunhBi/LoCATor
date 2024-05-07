@@ -21,17 +21,16 @@ class CatReportHolder (
 //    fun bind(cat: Cat, onCatClicked: (crimeId: UUID) -> Unit) {
     fun bind(cat: Cat, checkStatus:Boolean) {
         Log.d("SELECT","bind called")
-    binding.catWitnessSelected.isChecked=checkStatus
-    // test use
-    CoroutineScope(Dispatchers.Main).launch {
-        // Call getCatImg in a coroutine
-        val repo= LoCATorRepo.getInstance()
-        val catImage = repo.getCatFirstImg(cat.id)
+        binding.catWitnessSelected.isChecked=checkStatus
+        // test use
+        CoroutineScope(Dispatchers.Main).launch {
+            // Call getCatImg in a coroutine
+            val repo= LoCATorRepo.getInstance()
+            val catImage = repo.getCatFirstImg(cat.id)
 
-        // Set the fetched image on the ImageView
-        binding.catWitnessImg.setImageBitmap(catImage)
-
-    }
+            // Set the fetched image on the ImageView
+            binding.catWitnessImg.setImageBitmap(catImage)
+        }
     }
 }
 
