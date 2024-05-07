@@ -137,6 +137,10 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         loadData()
         drawLatestMarkers()
         map?.setOnMarkerClickListener(this)
+        map?.setOnMapClickListener {
+            map?.clear()
+            drawLatestMarkers()
+        }
 
         refresh()
     }
@@ -257,7 +261,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             posList.add(convertGeoPointToLatLng(it.geoPoint))
         }
         map?.let { drawPolyline(it,posList, R.color.orange, 10f) }
-        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+//        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
         //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
         status=1
     }
@@ -267,7 +271,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         last10.forEach { wit ->
             addMarkersToMap(wit)
         }
-        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+//        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
         //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
         status=0
     }
@@ -305,7 +309,6 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             drawLatestMarkers()
         }
         else if (type==UpdateType.SHOW_SPECIFIC_CAT) {
-            // TODO: show history of a selected cat, should add a parameter catid
             map?.clear()
             drawMarkersOfACat(para)
         }
