@@ -79,6 +79,7 @@ class LoCATorRepo private constructor() {
         db.fetchWitsFromFirestore()
         witnesses.clear()
         witnesses.addAll(db.getAllWits())
+        witnesses.sortByDescending { witness -> witness.time }
     }
     suspend fun reloadCats(){
         db.fetchCatsFromFirestore()
@@ -104,8 +105,6 @@ class LoCATorRepo private constructor() {
         Log.d("CAMPUS","Your campus: "+campus)
         campus?.let { db.set_campus(it) }
 
-
-
         db.fetchWitsFromFirestore()
         db.fetchCatsFromFirestore()
 
@@ -118,6 +117,7 @@ class LoCATorRepo private constructor() {
         witnesses.clear()
         witnesses.addAll(db.getAllWits())
         Log.d(TAG,"init: size of wits: ${witnesses.size}")
+        witnesses.sortByDescending { witness -> witness.time }
 
         likes.clear()
         likes.addAll(db.getLikes())
@@ -126,11 +126,6 @@ class LoCATorRepo private constructor() {
         notifs.addAll(db.getNotifs())
 
         isManager=db.isManager(auth.currentUser)
-
-
-
-
-
     }
 
     fun userLogIn(email:String, pwd:String){

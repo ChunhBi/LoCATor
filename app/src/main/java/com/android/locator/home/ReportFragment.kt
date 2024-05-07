@@ -110,11 +110,8 @@ class ReportFragment:Fragment() {
                                         navController.navigate(
                                             ReportFragmentDirections.actionReport2Home()
                                         )
-
                                     }
                                 }
-
-
                             }
 
                             override fun onLocationUnavailable() {
