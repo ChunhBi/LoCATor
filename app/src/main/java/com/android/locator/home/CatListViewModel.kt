@@ -36,7 +36,7 @@ class CatListViewModel : ViewModel(),UpdateListener {
     }
 
     override fun update(type: UpdateType) {
-        if(type==UpdateType.CAT){
+        if(type==UpdateType.CAT||type==UpdateType.LIKE){
             val cats=repo.get_Cats()
             _cats.value = cats
         }

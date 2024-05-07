@@ -2,6 +2,7 @@ package com.android.locator
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
@@ -116,8 +117,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
+
             Log.d("NOTIF", "Missing permission.")
             return
         }

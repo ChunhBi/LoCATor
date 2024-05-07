@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 enum class UpdateType {
     WITNESS,
     CAT,
+    LIKE,
 }
 interface UpdateListener{
     fun update(type:UpdateType)
@@ -79,6 +80,15 @@ class LoCATorRepo private constructor() {
         db.fetchCatsFromFirestore()
         cats.clear()
         cats.addAll(db.getAllCats())
+    }
+
+    suspend fun reloadLikes(){
+        db.fetchLikesFromFirestore(auth.currentUser)
+        likes.clear()
+        likes.addAll(db.getLikes())
+        activityListener?.restartWorkManager()
+
+
     }
     suspend fun initAllDbData(){
         db.fetchWitsFromFirestore()
@@ -287,12 +297,20 @@ class LoCATorRepo private constructor() {
         }
     }
 
-    fun addLike(catId:String){
-
+    suspend fun addLike(catId:String){
+        try {
+            db.addLike(auth.currentUser,catId)
+        }catch (e:Exception){
+            activityListener?.makeToast(e.message.toString())
+        }
     }
 
     suspend fun deleteLike(catId:String){
-
+        try {
+            db.cancelLike(auth.currentUser,catId)
+        }catch (e:Exception){
+            activityListener?.makeToast(e.message.toString())
+        }
 
     }
 
