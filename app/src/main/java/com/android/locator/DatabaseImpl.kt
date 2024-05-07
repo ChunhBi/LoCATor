@@ -553,7 +553,6 @@ class DatabaseImpl {
 
     suspend fun getUserCampus(user: FirebaseUser?): String? {
         if (user != null) {
-            val db = FirebaseFirestore.getInstance()
             val result = db.collection("userCampus")
                 .whereEqualTo("uid", user.uid)
                 .get()
@@ -568,6 +567,21 @@ class DatabaseImpl {
         } else {
             throw UserIsNull()
         }
+    }
+
+    suspend fun getAllCampuses():List<String>{
+        val result = db.collection("campus")
+            .get()
+            .await()
+
+        val campusNames = mutableListOf<String>()
+        for (document in result.documents) {
+            val name = document.getString("name")
+            if (name != null) {
+                campusNames.add(name)
+            }
+        }
+        return campusNames
     }
 
 

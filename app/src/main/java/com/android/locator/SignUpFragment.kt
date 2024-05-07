@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.android.locator.databinding.SignupFragLayoutBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SignUpFragment:Fragment() {
     private var binding: SignupFragLayoutBinding? = null
@@ -25,22 +28,30 @@ class SignUpFragment:Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        CoroutineScope(Dispatchers.Main).launch {
 
-        binding!!.signUpButton.setOnClickListener {
-            val email=binding!!.emailEditText.text.toString()
-            val pwd=binding!!.passwordEditText.text.toString()
-            val pwd2=binding!!.confirmPasswordEditText.text.toString()
-            if(pwd.equals(pwd2)){
-                repo?.userSignUp(email,pwd,"BU")
+            val campuses=repo.getAllCampuses()
+
+            binding!!.signUpButton.setOnClickListener {
+                val email = binding!!.emailEditText.text.toString()
+                val pwd = binding!!.passwordEditText.text.toString()
+                val pwd2 = binding!!.confirmPasswordEditText.text.toString()
+
+                if (pwd.equals(pwd2)) {
+                    repo?.userSignUp(email, pwd, "BU")
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "The passwords you typed do not match",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
             }
-            else{
-                Toast.makeText(requireContext(),"The passwords you typed do not match",Toast.LENGTH_SHORT).show()
+            binding!!.loginButton.setOnClickListener {
+                signupFragmentListener?.gotoLogin()
             }
-
-
-        }
-        binding!!.loginButton.setOnClickListener {
-            signupFragmentListener?.gotoLogin()
         }
     }
 

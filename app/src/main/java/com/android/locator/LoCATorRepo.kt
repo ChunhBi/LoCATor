@@ -397,5 +397,9 @@ class LoCATorRepo private constructor() {
             }
     }
 
+    suspend fun getAllCampuses():List<String>{
+        return db.getAllCampuses()
+    }
+
 
 }

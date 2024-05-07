@@ -1,14 +1,18 @@
 package com.android.locator.home
 
+import LocationHelper
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.locator.LoCATorRepo
@@ -28,6 +32,8 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -44,6 +50,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
     private lateinit var wits:List<Witness>
     private lateinit var groupedWitnesses:Map<String, List<Witness>>
     private lateinit var latestWitnesses: MutableList<Witness>
+
+    var currentLocation:LatLng= LatLng(0.0,0.0)
 
     private var status=0
 
@@ -112,6 +120,22 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
 
         //addMarkersToMap()
         map?.setOnMarkerClickListener(this)
+
+        val locationHelper=LocationHelper(requireContext())
+        locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
+            override fun onLocationResult(location: Location) {
+
+                currentLocation= LatLng(location.latitude, location.longitude)
+
+            }
+
+            override fun onLocationUnavailable() {
+                Toast.makeText(requireContext(),"Location unavailable", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // Optionally, center the map camera on the user's current location
+
     }
 
     fun geoPointToLatLng(geoPoint: GeoPoint): LatLng {
@@ -143,7 +167,9 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
                 if (catImg != null) {
                     addCustomIconMarker(it, latLng, catImg, markerTitle, markerSnippet,wit.catId,wit.time)
                     map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
-                    //TODO: move camera to current position
+                    map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+                    //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+
                 }
             }
         }
@@ -217,6 +243,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             posList.add(convertGeoPointToLatLng(it.geoPoint))
         }
         map?.let { drawPolyline(it,posList, R.color.orange, 10f) }
+        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+        //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
         status=1
     }
 
@@ -225,6 +253,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         last10.forEach { wit ->
             addMarkersToMap(wit)
         }
+        map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+        //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
         status=0
     }
 
