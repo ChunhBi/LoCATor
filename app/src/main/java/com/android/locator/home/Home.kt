@@ -1,6 +1,8 @@
 package com.android.locator.home
 
 import LocationHelper
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -13,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.locator.LoCATorRepo
@@ -55,7 +58,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
 
     private var status=0
 
-    private var curMarker: Marker? = null
+//    private var curMarker: Marker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,20 +116,30 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         // Bind the GoogleMap instance
         map = p0
         map?.mapType = GoogleMap.MAP_TYPE_TERRAIN
-        // Add markers to the map or perform other map operations
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return
+//        }
+        map?.setMyLocationEnabled(true)
 
         loadData()
         drawLatestMarkers()
-
-
-        //addMarkersToMap()
         map?.setOnMarkerClickListener(this)
 
         refresh()
-    }
-
-    fun setInitPos() {
-
     }
 
     fun refresh() {
@@ -136,12 +149,12 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
                 currentLocation= LatLng(location.latitude, location.longitude)
 
                 map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-                if (curMarker == null) {
-                    curMarker = map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
-                }
-                else {
-                    curMarker?.setPosition(currentLocation);
-                }
+//                if (curMarker == null) {
+//                    curMarker = map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+//                }
+//                else {
+//                    curMarker?.setPosition(currentLocation);
+//                }
             }
             override fun onLocationUnavailable() {
                 Toast.makeText(requireContext(),"Location unavailable", Toast.LENGTH_SHORT).show()
