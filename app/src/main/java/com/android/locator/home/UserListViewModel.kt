@@ -58,6 +58,7 @@ class UserListViewModel(private val type: Int) : ViewModel() {
             }
             2 -> { // notifications
                 CoroutineScope(Dispatchers.Main).launch{ repo.reloadWitnesses()}
+                CoroutineScope(Dispatchers.Main).launch{ repo.reloadNotifications()}
                 val notifications = repo.get_Notifications()
                 _notifications.value = notifications
             }
