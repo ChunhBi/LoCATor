@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="30dp"
-        android:background="@drawable/bar_rounded"
+        android:background="@drawable/bar_rounded_2"
         app:elevation="4dp"
         app:itemActiveIndicatorStyle="@android:color/transparent"
         app:itemIconSize="30dp"

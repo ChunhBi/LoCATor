@@ -1,0 +1,20 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+     <!-- <item android:drawable="@android:drawable/dialog_holo_light_frame" /> -->
+
+    <item
+        android:drawable="@drawable/gradient_shadow" />
+
+    <item android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="@color/lighter_orange"
+                android:endColor="@color/lightest_orange"
+                android:type="linear"
+                android:angle="90"
+            />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+</layer-list>
