@@ -125,6 +125,10 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         refresh()
     }
 
+    fun setInitPos() {
+
+    }
+
     fun refresh() {
         val locationHelper=LocationHelper(requireContext())
         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
@@ -133,7 +137,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
 
                 map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                 if (curMarker == null) {
-                    map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+                    curMarker = map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
                 }
                 else {
                     curMarker?.setPosition(currentLocation);

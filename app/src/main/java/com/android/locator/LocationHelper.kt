@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
+const val NEW_LOCATION_SECOND_THRESHOLD = 1
 class LocationHelper(private val context: Context) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -31,34 +32,44 @@ class LocationHelper(private val context: Context) {
         // Request last known location
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                fusedLocationClient.requestLocationUpdates(createLocationRequest(), object :
-                    com.google.android.gms.location.LocationCallback() {
-                    override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
-                        super.onLocationResult(locationResult)
-                        // Use the most recent location from the location result
-                        callback.onLocationResult(locationResult.lastLocation)
-                        Log.d("Location", locationResult.lastLocation.toString())
-                        // Remove location updates as we only need one-time location
-                        fusedLocationClient.removeLocationUpdates(this)
+                if (location != null) {
+                    // Got last known location
+                    val locationTime = location.time // Timestamp in milliseconds since epoch
+
+                    val currentTime = System.currentTimeMillis()
+                    // Calculate the age of the location in milliseconds
+                    val locationAge = currentTime - locationTime
+                    // Convert to desired unit (e.g., seconds)
+                    val locationAgeInSec = locationAge / 1000.0
+
+                    // Check if location is too old based on your threshold
+                    if (locationAgeInSec > NEW_LOCATION_SECOND_THRESHOLD) {
+                        fusedLocationClient.requestLocationUpdates(createLocationRequest(), object :
+                            com.google.android.gms.location.LocationCallback() {
+                            override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+                                super.onLocationResult(locationResult)
+                                // Use the most recent location from the location result
+                                callback.onLocationResult(locationResult.lastLocation)
+                                // Remove location updates as we only need one-time location
+                                fusedLocationClient.removeLocationUpdates(this)
+                            }
+                        }, null)
+                    } else {
+                        callback.onLocationResult(location)
                     }
-                }, null)
-//                if (location != null) {
-//                    // Got last known location
-//                    Log.d("Location", location.toString())
-//                    callback.onLocationResult(location)
-//                } else {
-//                    // Last known location not available, request location updates
-//                    fusedLocationClient.requestLocationUpdates(createLocationRequest(), object :
-//                        com.google.android.gms.location.LocationCallback() {
-//                        override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
-//                            super.onLocationResult(locationResult)
-//                            // Use the most recent location from the location result
-//                            callback.onLocationResult(locationResult.lastLocation)
-//                            // Remove location updates as we only need one-time location
-//                            fusedLocationClient.removeLocationUpdates(this)
-//                        }
-//                    }, null)
-//                }
+                } else {
+                    // Last known location not available, request location updates
+                    fusedLocationClient.requestLocationUpdates(createLocationRequest(), object :
+                        com.google.android.gms.location.LocationCallback() {
+                        override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+                            super.onLocationResult(locationResult)
+                            // Use the most recent location from the location result
+                            callback.onLocationResult(locationResult.lastLocation)
+                            // Remove location updates as we only need one-time location
+                            fusedLocationClient.removeLocationUpdates(this)
+                        }
+                    }, null)
+                }
             }
     }
 
