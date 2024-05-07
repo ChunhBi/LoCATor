@@ -66,6 +66,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
+    <Spinner
+        android:id="@+id/select_campus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText" />
+
     <!-- Submit Button -->
     <Button
         android:id="@+id/signUpButton"
@@ -79,7 +88,7 @@
         style="@style/buttonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirmPasswordEditText" />
+        app:layout_constraintTop_toBottomOf="@id/select_campus" />
 
     <!-- Go to Sign-Up Button -->
     <Button

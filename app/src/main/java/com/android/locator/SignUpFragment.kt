@@ -1,10 +1,14 @@
 package com.android.locator
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.locator.databinding.SignupFragLayoutBinding
 
@@ -42,6 +46,12 @@ class SignUpFragment:Fragment() {
         binding!!.loginButton.setOnClickListener {
             signupFragmentListener?.gotoLogin()
         }
+        val campus_list = emptyList<String>()
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, campus_list)
+        binding!!.selectCampus.adapter = adapter
+
+        // on below line we are adding on item selected listener for spinner.
+        binding!!.selectCampus.onItemSelectedListener = SpinnerDetailActivity(this)
     }
 
     fun setSignupFragmentListener(listener:SignupFragmentListener?){
@@ -52,5 +62,14 @@ class SignUpFragment:Fragment() {
         super.onDestroyView()
         // Clear the binding when the view is destroyed
         binding = null
+    }
+
+    class SpinnerDetailActivity(fragment: Fragment) : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            // TODO: change language of user in fragment
+        }
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            // Code to execute when no item is selected (optional)
+        }
     }
 }
