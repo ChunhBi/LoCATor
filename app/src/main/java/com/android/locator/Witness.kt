@@ -8,5 +8,6 @@ data class Witness(
     var catId:String,
     var geoPoint:GeoPoint,
     var time: Date,
+    var campus:String
 )
 

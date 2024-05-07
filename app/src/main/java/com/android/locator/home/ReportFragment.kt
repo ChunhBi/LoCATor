@@ -85,8 +85,10 @@ class ReportFragment:Fragment() {
 //                                val longitude = location.longitude
                                 val position = GeoPoint(location.latitude, location.longitude)
                                 // Do something with latitude and longitude
-                                val newWit=Witness(id="", catId =selectedCatId, geoPoint = position, time = Date())
+
                                 CoroutineScope(Dispatchers.Main).launch{
+
+                                    val newWit=Witness(id="", catId =selectedCatId, geoPoint = position, time = Date(), campus = "")
                                     val newWitId=repo.add_witness(newWit)
                                     val drawable: Drawable? = binding.reportImg.drawable
                                     if (drawable != null && drawable is BitmapDrawable) {

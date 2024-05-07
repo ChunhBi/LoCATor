@@ -291,6 +291,14 @@ class LoCATorRepo private constructor() {
     }
 
     suspend fun add_witness(wit:Witness):String{
+        val catId=wit.catId
+        var catCampus=""
+        for (cat in cats) {
+            if (cat.id == catId) {
+                catCampus=cat.campus
+            }
+        }
+        wit.campus=catCampus
         return db.addWitness(wit)
     }
 

@@ -111,7 +111,7 @@ class DatabaseImpl {
     suspend fun fetchCatsFromFirestore() {
 
         _cats.clear()
-        val result = db.collection("cat").get(Source.SERVER).await()
+        val result = db.collection("cat").whereEqualTo("campus",campus).get(Source.SERVER).await()
         val fetchedCats = result.map { document ->
             val catData = document.data
             val id = document.id
@@ -211,7 +211,7 @@ class DatabaseImpl {
     suspend fun fetchWitsFromFirestore() {
 
         _witnesses.clear()
-        val result = db.collection("witness").get(Source.SERVER).await()
+        val result = db.collection("witness").whereEqualTo("campus",campus).get(Source.SERVER).await()
         val fetchedWits = result.map { document ->
             val witData = document.data
             val id = document.id
@@ -219,7 +219,8 @@ class DatabaseImpl {
 
             val position = witData["position"] as? GeoPoint?: GeoPoint(0.0,0.0)
             var time = getTimeFromWitData(witData)
-            Witness(id,cleanCatId,position,time)
+            var campus=witData["campus"]as? String?:"Unknown"
+            Witness(id,cleanCatId,position,time,campus)
         }
         _witnesses.addAll(fetchedWits.toMutableList())
 
@@ -419,7 +420,8 @@ class DatabaseImpl {
         val witData = mapOf(
             "cat" to wit.catId,
             "position" to wit.geoPoint,
-            "time" to Date()
+            "time" to Date(),
+            "campus" to wit.campus
         )
         val witsCollection = db.collection("witness")
         val documentReference=witsCollection.add(witData).await()

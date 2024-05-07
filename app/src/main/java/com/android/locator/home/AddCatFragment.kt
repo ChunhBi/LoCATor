@@ -75,7 +75,17 @@ class AddCatFragment:Fragment() {
                     Toast.makeText(requireContext(),"Cat name cannot be empty.",Toast.LENGTH_SHORT).show()
                 }else if(drawable != null && drawable is BitmapDrawable){
                     val bitmap: Bitmap = drawable.bitmap
-                    val newCat= Cat(campus = "BU", createdAt = Date(), name = catName,id="", images = mutableListOf())
+                    var c:String=""
+                    if(repo.campus==null){
+                        Toast.makeText(requireContext(),"You don't have a campus!",Toast.LENGTH_SHORT).show()
+                        navController.navigate(
+                            AddCatFragmentDirections.actionAddCat2CatList()
+                        )
+                    }else{
+                        c= repo.campus!!
+                    }
+
+                    val newCat= Cat(campus = c, createdAt = Date(), name = catName,id="", images = mutableListOf())
                     CoroutineScope(Dispatchers.Main).launch {
                         repo.add_cat(newCat, bitmap)
                         repo.reloadCats()
