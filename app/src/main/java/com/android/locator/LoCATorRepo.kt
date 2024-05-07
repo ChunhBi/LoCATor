@@ -39,6 +39,8 @@ class LoCATorRepo private constructor() {
 
     var isManager=false
 
+    var campus:String?=null
+
     var activityListener:MainActivityListener?=null
 
     private val listeners = mutableListOf<UpdateListener>()
@@ -97,8 +99,15 @@ class LoCATorRepo private constructor() {
 
     }
     suspend fun initAllDbData(){
+        campus=db.getUserCampus(auth.currentUser)
+        Log.d("CAMPUS","Your campus: "+campus)
+        campus?.let { db.set_campus(it) }
+
+
+
         db.fetchWitsFromFirestore()
         db.fetchCatsFromFirestore()
+
         db.fetchLikesFromFirestore(auth.currentUser)
         db.fetchNotificationsFromFirebase(auth.currentUser)
 
@@ -116,6 +125,8 @@ class LoCATorRepo private constructor() {
         notifs.addAll(db.getNotifs())
 
         isManager=db.isManager(auth.currentUser)
+
+
 
 
 
@@ -190,6 +201,8 @@ class LoCATorRepo private constructor() {
         witnesses.clear()
         likes.clear()
         activityListener?.logOut()
+        isManager=false
+        campus=null
     }
 
     suspend fun getWitBitMap(witId:String):Bitmap?{

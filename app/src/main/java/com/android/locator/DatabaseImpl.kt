@@ -31,6 +31,7 @@ class DatabaseImpl {
     val TAG="DbImpl"
     private val db = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance()
+    var campus:String=""
 
     //private val cats: MutableMap<String, MutableStateFlow<Cat>> = mutableMapOf()
     private val _cats: MutableList<Cat> = mutableListOf()
@@ -49,6 +50,9 @@ class DatabaseImpl {
     }
 
      */
+    fun set_campus(c:String){
+        campus=c
+    }
     fun generateTimestampString(): String {
         // Define the date and time format pattern
         val pattern = "yyyy-MM-dd HH:mm:ss"
@@ -516,6 +520,52 @@ class DatabaseImpl {
             throw UserIsNull()
         }
         return false
+    }
+
+    suspend fun updateUserCampus(user: FirebaseUser?,campus:String){
+        if(user!=null){
+            val result = db.collection("userCampus")
+                .whereEqualTo("uid", user.uid)
+                .get(Source.SERVER)
+                .await()
+            if(result.isEmpty){
+                val newData = hashMapOf(
+                    "uid" to user.uid,
+                    "campus" to campus
+                )
+                db.collection("userCampus")
+                    .add(newData)
+                    .await()
+            }else{
+                for (document in result.documents) {
+                    db.collection("userCampus")
+                        .document(document.id)
+                        .update("campus", campus)
+                        .await()
+                }
+            }
+        }else{
+            throw UserIsNull()
+        }
+    }
+
+    suspend fun getUserCampus(user: FirebaseUser?): String? {
+        if (user != null) {
+            val db = FirebaseFirestore.getInstance()
+            val result = db.collection("userCampus")
+                .whereEqualTo("uid", user.uid)
+                .get()
+                .await()
+
+            return if (!result.isEmpty) {
+                // Document found, return campus
+                result.documents[0].getString("campus")
+            } else {
+                null
+            }
+        } else {
+            throw UserIsNull()
+        }
     }
 
 
