@@ -229,11 +229,15 @@ class LoCATorRepo private constructor() {
 
     suspend fun getCatImg(path:String?): Bitmap? {
         if(path!=null){
-            return db.getCatImgBitmap(path)
+            try {
+                return db.getCatImgBitmap(path)
+            }
+            catch (e:Exception) {
+                return null
+            }
         }else{
             return null
         }
-
     }
 
     suspend fun getCatFirstImg(catID:String): Bitmap? {

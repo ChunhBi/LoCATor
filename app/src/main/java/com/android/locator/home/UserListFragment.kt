@@ -41,7 +41,7 @@ class UserListFragment():Fragment() {
         val navController = findNavController()
         binding.apply {
             listUserTitle.text = when (args.choice) {
-                0 -> "My Witnesses"
+                0 -> "Witnesses"
                 1 -> "My Likes"
                 2 -> "My Notifications"
                 3 -> "Campus List"
