@@ -36,39 +36,26 @@
         app:layout_constraintTop_toBottomOf="@id/appName" />
 
     <!-- Password EditText -->
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        style="@style/editTextStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
 
     <!-- Submit Button -->
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/sendRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:padding="12dp"
-        android:text="@string/login"
+        android:text="@string/send_request"
         style="@style/buttonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
 
     <!-- Go to Sign-Up Button -->
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/goBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -76,23 +63,11 @@
         android:layout_marginEnd="32dp"
         android:padding="12dp"
         style="@style/buttonStyle"
-        android:text="@string/no_account_sign_up"
+        android:text="@string/go_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@id/sendRequest" />
 
-    <Button
-        android:id="@+id/forgetPwd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:padding="12dp"
-        style="@style/buttonStyle"
-        android:text="@string/forget_pwd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupButton" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -345,5 +345,26 @@ class LoCATorRepo private constructor() {
         return auth.currentUser?.email
     }
 
+    fun resetRequest(email: String) {
+
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Password reset email sent successfully
+                    // You can handle the success case here
+                    println("Password reset email sent successfully")
+                    Log.d("EMAIL","success")
+                    activityListener?.makeToast("Check your email to reset password.")
+                } else {
+                    // Password reset email sending failed
+                    // You can handle the failure case here
+                    val exception = task.exception
+                    println("Password reset email sending failed: ${exception?.message}")
+                    Log.d("EMAIL","fail")
+                    activityListener?.makeToast("Fail to send email.")
+                }
+            }
+    }
+
 
 }

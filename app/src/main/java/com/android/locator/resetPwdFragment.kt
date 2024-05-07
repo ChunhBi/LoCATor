@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.android.locator.databinding.LoginFragLayoutBinding
+import com.android.locator.databinding.ForgetPwdLayoutBinding
 
-class LoginFragment:Fragment() {
+class resetPwdFragment:Fragment() {
 
-    private var binding: LoginFragLayoutBinding? = null
-    private var loginFragmentListener:LoginFragmentListener?=null
+    private var binding: ForgetPwdLayoutBinding? = null
+    private var resetPwdFragmentListener:ResetPwdFragmentListener?=null
     val repo=LoCATorRepo.getInstance()
 
     override fun onCreateView(
@@ -19,7 +19,7 @@ class LoginFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout using the binding class
-        binding = LoginFragLayoutBinding.inflate(inflater, container, false)
+        binding = ForgetPwdLayoutBinding.inflate(inflater, container, false)
 
 
         // Return the root view of the inflated layout
@@ -29,27 +29,19 @@ class LoginFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding!!.loginButton.setOnClickListener {
+        binding!!.sendRequest.setOnClickListener {
             var email=binding!!.emailEditText.text.toString()
-            var pwd=binding!!.passwordEditText.text.toString()
 
-            if(false){
-                email="ydhe@bu.edu"
-                pwd="12345678"
-            }
 
-            repo?.userLogIn(email,pwd)
+            repo?.resetRequest(email)
         }
-        binding!!.signupButton.setOnClickListener {
-            loginFragmentListener?.gotoSignup()
-        }
-        binding!!.forgetPwd.setOnClickListener {
-            loginFragmentListener?.gotoResetPwd()
+        binding!!.goBack.setOnClickListener {
+            resetPwdFragmentListener?.goBackToLogin()
         }
     }
 
-    fun setLoginFragmentListener(listener:LoginFragmentListener?){
-        loginFragmentListener=listener
+    fun setResetPwdListener(listener:ResetPwdFragmentListener?){
+        resetPwdFragmentListener=listener
     }
 
     override fun onDestroyView() {

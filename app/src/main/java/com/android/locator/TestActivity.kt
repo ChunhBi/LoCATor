@@ -4,26 +4,32 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
-        val db=DatabaseImpl()
-        lifecycleScope.launch {
-            db.fetchWitsFromFirestore()
-            db.fetchCatsFromFirestore()
-            val cats=db.getAllCats()
-            val wits=db.getAllWits()
-            cats.forEach {
-                Log.d("LOAD",it.toString())
+        val auth = FirebaseAuth.getInstance()
+
+// Email address of the user who wants to reset their password
+        val emailAddress = "ydhe@bu.edu"
+
+// Send the password reset email
+        auth.sendPasswordResetEmail(emailAddress)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Password reset email sent successfully
+                    // You can handle the success case here
+                    println("Password reset email sent successfully")
+                    Log.d("EMAIL","success")
+                } else {
+                    // Password reset email sending failed
+                    // You can handle the failure case here
+                    val exception = task.exception
+                    println("Password reset email sending failed: ${exception?.message}")
+                    Log.d("EMAIL","fail")
+                }
             }
-            wits.forEach {
-                Log.d("LOAD",it.toString())
-            }
-            db.uploadWitImg("XVYF29h80csEEigo2B8J",R.raw.cat0, context = this@TestActivity)
-        }
 
     }
 }

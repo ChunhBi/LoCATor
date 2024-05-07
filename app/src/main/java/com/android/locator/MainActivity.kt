@@ -51,14 +51,20 @@ interface MainActivityListener{
 interface LoginFragmentListener{
     //fun userLogin(email: String, pwd:String)
     fun gotoSignup()
+    fun gotoResetPwd()
 }
 interface SignupFragmentListener{
     //fun userSignup(email: String, pwd:String)
     fun gotoLogin()
 }
 
+interface ResetPwdFragmentListener{
+    //fun userSignup(email: String, pwd:String)
+    fun goBackToLogin()
+}
 
-class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListener,SignupFragmentListener {
+
+class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListener,SignupFragmentListener,ResetPwdFragmentListener {
     val TAG="MAIN"
     private val repo: LoCATorRepo=LoCATorRepo.getInstance()
     lateinit var workId: UUID
@@ -203,6 +209,12 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
 
     }
 
+    override fun gotoResetPwd() {
+        val resetPwdFragment = resetPwdFragment()
+        resetPwdFragment.setResetPwdListener(this)
+        setFragmentToContainer(resetPwdFragment)
+    }
+
     private fun startWorkManager(){
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -249,5 +261,11 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
 
     private fun cancelWorkManager(){
         WorkManager.getInstance(this).cancelAllWork()
+    }
+
+    override fun goBackToLogin() {
+        val loginFragment = LoginFragment()
+        loginFragment.setLoginFragmentListener(this)
+        setFragmentToContainer(loginFragment)
     }
 }
