@@ -1,19 +1,14 @@
 package com.android.locator.home
 
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
-import com.android.locator.R
 import com.android.locator.databinding.ListItemCatBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
-import java.util.UUID
 
 class CatHolder (
     val binding: ListItemCatBinding

@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
-import com.android.locator.R
-import com.android.locator.databinding.ListItemCatBinding
 import com.android.locator.databinding.ListItemCatSelectBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

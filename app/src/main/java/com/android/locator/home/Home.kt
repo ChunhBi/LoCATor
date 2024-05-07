@@ -2,21 +2,13 @@ package com.android.locator.home
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.Rect
-import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.locator.LoCATorRepo
@@ -38,7 +30,6 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
 import java.util.Date
-import java.util.Locale
 
 
 class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListener{

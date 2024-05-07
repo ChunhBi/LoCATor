@@ -1,7 +1,5 @@
 package com.android.locator
 
-import android.content.Context
-import android.content.UriPermission
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
@@ -9,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 enum class UpdateType {
     WITNESS,

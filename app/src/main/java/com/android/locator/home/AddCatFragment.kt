@@ -20,7 +20,6 @@ import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.UpdateType
 import com.android.locator.databinding.FragmentAddCatBinding
-import com.android.locator.databinding.FragmentCatInfoBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

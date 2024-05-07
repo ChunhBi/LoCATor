@@ -1,7 +1,6 @@
 package com.android.locator.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
 import com.android.locator.UpdateListener
@@ -9,7 +8,6 @@ import com.android.locator.UpdateType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import java.util.Date
 
 class CatListViewModel : ViewModel(),UpdateListener {

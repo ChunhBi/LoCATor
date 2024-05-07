@@ -1,10 +1,8 @@
 package com.android.locator
 
 import AccessPermissionHelper
-import LocationHelper
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +12,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.android.locator.home.BitmapHelper
 import com.android.locator.home.Home
-import com.android.locator.home.HomeFragment
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

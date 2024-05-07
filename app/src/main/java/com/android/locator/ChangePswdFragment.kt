@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.locator.databinding.ChangePswdLayoutBinding
-import com.android.locator.databinding.SignupFragLayoutBinding
 
 class ChangePswdFragment:Fragment() {
     private var binding: ChangePswdLayoutBinding? = null

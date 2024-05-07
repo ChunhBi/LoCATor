@@ -5,7 +5,6 @@ import android.location.Location
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import java.util.concurrent.Executor
 
 class LocationHelper(private val context: Context) {
 

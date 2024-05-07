@@ -1,6 +1,5 @@
 package com.android.locator.home
 
-import android.graphics.Bitmap
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
 import com.android.locator.UpdateType
 import com.android.locator.databinding.FragmentCatInfoBinding
-import com.android.locator.databinding.FragmentReportBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

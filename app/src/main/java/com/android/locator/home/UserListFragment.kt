@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.locator.R
-import com.android.locator.databinding.FragmentListBinding
 import com.android.locator.databinding.FragmentListUserBinding
 import kotlinx.coroutines.launch
-import javax.annotation.meta.When
 
 class UserListFragment():Fragment() {
     private var _binding: FragmentListUserBinding?=null

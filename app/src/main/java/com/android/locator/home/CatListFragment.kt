@@ -16,6 +16,8 @@ import com.android.locator.LoCATorRepo
 import com.android.locator.R
 import com.android.locator.databinding.FragmentListBinding
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class CatListFragment:Fragment() {
     private var _binding: FragmentListBinding?=null
@@ -104,9 +106,5 @@ class CatListFragment:Fragment() {
                 }
             }
         }
-
     }
-
-
-
 }

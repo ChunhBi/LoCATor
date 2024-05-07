@@ -2,16 +2,12 @@ package com.android.locator.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.android.locator.Cat
 import com.android.locator.LoCATorRepo
 import com.android.locator.Witness
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import java.util.Date
-import java.util.UUID
 
 class UserListViewModel(private val type: Int) : ViewModel() {
     private val _notifications: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())

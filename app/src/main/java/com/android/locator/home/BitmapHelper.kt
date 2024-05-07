@@ -8,11 +8,8 @@ import android.graphics.LinearGradient
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RectF
 import android.graphics.Shader
 import android.icu.text.SimpleDateFormat
-import androidx.core.content.ContentProviderCompat.requireContext
-
 import androidx.core.content.ContextCompat
 import com.android.locator.R
 import java.util.Date
