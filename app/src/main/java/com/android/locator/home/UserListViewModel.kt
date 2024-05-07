@@ -13,6 +13,7 @@ class UserListViewModel(private val type: Int) : ViewModel() {
     private val _notifications: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())
     private val _witnesses: MutableStateFlow<List<Witness>> = MutableStateFlow(emptyList())
     private val _likes: MutableStateFlow<List<Cat>> = MutableStateFlow(emptyList())
+    private val _campuses: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     private val repo=LoCATorRepo.getInstance()
     val witness : StateFlow<List<Witness>>
         get() {
@@ -25,6 +26,11 @@ class UserListViewModel(private val type: Int) : ViewModel() {
     val notifications : StateFlow<List<Witness>>
         get() {
             return _notifications.asStateFlow()
+        }
+
+    val campuses : StateFlow<List<String>>
+        get() {
+            return _campuses.asStateFlow()
         }
     init {
         when (type) {
@@ -43,7 +49,7 @@ class UserListViewModel(private val type: Int) : ViewModel() {
                 }
                 _likes.value = cats
             }
-            1 -> {
+            2 -> {
                 val likes = repo.get_Notifs()
                 val nots = mutableListOf<Witness>()
                 for (witId in nots) {// TODO: finish after getWitnessById is implemented
@@ -53,6 +59,9 @@ class UserListViewModel(private val type: Int) : ViewModel() {
 //                    }
                 }
                 _notifications.value = nots
+            }
+            3-> {
+                // TODO: get campus
             }
         }
     }
