@@ -163,7 +163,7 @@ class LoCATorRepo private constructor() {
         }
     }
 
-    fun userSignUp(email: String, pwd: String) {
+    fun userSignUp(email: String, pwd: String,cps:String) {
         if(email==null||pwd==null||email.equals("")||pwd.equals("")){
             activityListener?.makeToast("Email or password should not be empty")
             return
@@ -177,6 +177,7 @@ class LoCATorRepo private constructor() {
                 CoroutineScope(Dispatchers.Main).launch {
                     // Call the suspend function initAllDbData() here
                     try {
+                        db.updateUserCampus(user,cps)
                         initAllDbData()
                     } catch (e: Exception) {
                         // Handle any exception that may occur during the database initialization

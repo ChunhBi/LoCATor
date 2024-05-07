@@ -31,7 +31,7 @@ class SignUpFragment:Fragment() {
             val pwd=binding!!.passwordEditText.text.toString()
             val pwd2=binding!!.confirmPasswordEditText.text.toString()
             if(pwd.equals(pwd2)){
-                repo?.userSignUp(email,pwd)
+                repo?.userSignUp(email,pwd,"BU")
             }
             else{
                 Toast.makeText(requireContext(),"The passwords you typed do not match",Toast.LENGTH_SHORT).show()
