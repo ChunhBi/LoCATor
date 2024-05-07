@@ -1,12 +1,16 @@
 package com.android.locator
 
 import AccessPermissionHelper
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.work.Constraints
@@ -200,6 +204,19 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
     }
 
     private fun startWorkManager(){
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this as Activity,  // Pass the activity reference
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                123
+            )
+            Log.d("NOTIF", "Missing permission.")
+        }
+
         val likedCats=repo.get_Likes()
         val allCats=repo.get_Cats()
         Log.d(TAG,"Likes: ${likedCats}")
