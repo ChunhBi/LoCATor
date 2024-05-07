@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.android.locator.LoCATorRepo
+import com.android.locator.R
 import com.android.locator.UpdateType
 import com.android.locator.Witness
 import com.android.locator.databinding.FragmentReportBinding
@@ -34,10 +36,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
+const val CAMERA_REQUEST_CODE = 100
+const val ALBUM_REQUEST_CODE = 200
 class ReportFragment:Fragment() {
-    companion object {
-        const val CAMERA_REQUEST_CODE = 100
-    }
     private var _binding: FragmentReportBinding? = null
     private lateinit var catsAdapter: CatReportAdapter
     private val repo=LoCATorRepo.getInstance()
@@ -47,6 +48,15 @@ class ReportFragment:Fragment() {
         }
 
     private val reportViewModel: ReportViewModel by viewModels()
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        // Update the ImageView with the selected image
+        if (uri != null) {
+            binding.reportImg.setImageURI(uri)
+        } else {
+            binding.reportImg.setImageResource(R.drawable.baseline_add_a_photo_24)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,11 +90,7 @@ class ReportFragment:Fragment() {
                         val locationHelper = LocationHelper(requireContext())
                         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
                             override fun onLocationResult(location: Location) {
-                                // Handle the obtained location
-//                                val latitude = location.latitude
-//                                val longitude = location.longitude
                                 val position = GeoPoint(location.latitude, location.longitude)
-                                // Do something with latitude and longitude
 
                                 CoroutineScope(Dispatchers.Main).launch{
 
@@ -115,9 +121,6 @@ class ReportFragment:Fragment() {
                                 Toast.makeText(requireContext(),"Location unavailable",Toast.LENGTH_SHORT).show()
                             }
                         })
-
-
-
                 }
             }
             reportImg.setOnClickListener(){
@@ -127,8 +130,10 @@ class ReportFragment:Fragment() {
                     AccessPermissionHelper.requestCameraPermission()
 
                 } else {
-                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+//                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+
+                    openImagePicker()
                 }
 
             }
@@ -142,7 +147,13 @@ class ReportFragment:Fragment() {
             }
         }
     }
-
+    private fun openImagePicker() {
+        if(!AccessPermissionHelper.isGalleryPermissionGranted()){
+            AccessPermissionHelper.requestGalleryPermission()
+        }
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        getContent.launch("image/*")
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -150,5 +161,4 @@ class ReportFragment:Fragment() {
             binding.reportImg.setImageBitmap(photo)
         }
     }
-
 }

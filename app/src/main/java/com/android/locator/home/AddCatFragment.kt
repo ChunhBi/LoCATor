@@ -27,13 +27,23 @@ import java.util.Date
 
 class AddCatFragment:Fragment() {
     private var _binding: FragmentAddCatBinding? = null
-    private lateinit var getContent: ActivityResultLauncher<String>
     private var hasImg=false
     val repo=LoCATorRepo.getInstance()
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        // Update the ImageView with the selected image
+        if (uri != null) {
+            binding.addCatImg.setImageURI(uri)
+            hasImg=true
+        } else {
+            binding.addCatImg.setImageResource(R.drawable.baseline_add_a_photo_24)
+            hasImg=false
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,16 +56,6 @@ class AddCatFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
-        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            // Update the ImageView with the selected image
-            if (uri != null) {
-                binding.addCatImg.setImageURI(uri)
-                hasImg=true
-            } else {
-                binding.addCatImg.setImageResource(R.drawable.baseline_add_a_photo_24)
-                hasImg=false
-            }
-        }
         binding.apply {
             addCatBackBtn.setOnClickListener {
                 navController.navigate(
@@ -108,5 +108,4 @@ class AddCatFragment:Fragment() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         getContent.launch("image/*")
     }
-
 }

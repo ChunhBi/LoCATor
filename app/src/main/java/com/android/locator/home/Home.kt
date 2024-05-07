@@ -78,12 +78,11 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-
+            homeRefreshBtn.setOnClickListener { refresh() }
         }
     }
 
     fun loadData(){
-
             try {
                 wits = repo.getWits()
                 // Log the size of wits to check if data is fetched
@@ -121,22 +120,21 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         //addMarkersToMap()
         map?.setOnMarkerClickListener(this)
 
+        refresh()
+    }
+
+    fun refresh() {
         val locationHelper=LocationHelper(requireContext())
         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
             override fun onLocationResult(location: Location) {
-
                 currentLocation= LatLng(location.latitude, location.longitude)
                 map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-
+                map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
             }
-
             override fun onLocationUnavailable() {
                 Toast.makeText(requireContext(),"Location unavailable", Toast.LENGTH_SHORT).show()
             }
         })
-
-        // Optionally, center the map camera on the user's current location
-
     }
 
     fun geoPointToLatLng(geoPoint: GeoPoint): LatLng {
@@ -167,8 +165,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             map?.let {
                 if (catImg != null) {
                     addCustomIconMarker(it, latLng, catImg, markerTitle, markerSnippet,wit.catId,wit.time)
-                    map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
-                    map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+//                    map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
+//                    map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
                     //map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
 
                 }
