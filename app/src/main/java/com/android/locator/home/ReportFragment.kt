@@ -127,10 +127,10 @@ class ReportFragment:Fragment() {
                     AccessPermissionHelper.requestCameraPermission()
 
                 } else {
-//                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
 
-                    openImagePicker()
+//                    openImagePicker()
                 }
 
             }
