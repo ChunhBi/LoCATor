@@ -55,6 +55,8 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
 
     private var status=0
 
+    private var curMarker: Marker? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -128,8 +130,14 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
         locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
             override fun onLocationResult(location: Location) {
                 currentLocation= LatLng(location.latitude, location.longitude)
+
                 map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-                map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+                if (curMarker == null) {
+                    map?.addMarker(MarkerOptions().position(currentLocation).title("You are here"))
+                }
+                else {
+                    curMarker?.setPosition(currentLocation);
+                }
             }
             override fun onLocationUnavailable() {
                 Toast.makeText(requireContext(),"Location unavailable", Toast.LENGTH_SHORT).show()
