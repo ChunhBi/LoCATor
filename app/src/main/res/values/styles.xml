@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="backButtonStyle">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:translationZ">10dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">@color/almostBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/btn_circled</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:tint">@color/orange</item>
+    </style>
     <style name="buttonStyle">
         <item name="android:textColor">@color/orange</item>
         <item name="android:elevation">2dp</item>
@@ -8,9 +20,13 @@
         <item name="android:textSize">20sp</item>
         <item name="android:shadowColor">@color/almostBlack</item>
         <item name="android:textStyle">bold</item>
+<!--        <item name="android:background">@drawable/bar_rounded</item>-->
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:tint">@color/orange</item>
     </style>
     <style name="editTextStyle">
         <item name="android:background">@drawable/bar_rounded</item>
+        <item name="android:padding">10dp</item>
     </style>
     <style name="titleStyle">
         <item name="android:background">@drawable/bar_rounded</item>
