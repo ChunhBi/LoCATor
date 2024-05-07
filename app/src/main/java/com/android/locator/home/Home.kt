@@ -126,6 +126,7 @@ class Home : Fragment(), OnMapReadyCallback, OnMarkerClickListener, UpdateListen
             override fun onLocationResult(location: Location) {
 
                 currentLocation= LatLng(location.latitude, location.longitude)
+                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
 
             }
 

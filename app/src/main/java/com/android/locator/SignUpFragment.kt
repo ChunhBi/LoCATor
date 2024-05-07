@@ -2,6 +2,7 @@ package com.android.locator
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SignUpFragment:Fragment() {
+class SignUpFragment:Fragment(), AdapterView.OnItemSelectedListener {
     private var binding: SignupFragLayoutBinding? = null
     private var signupFragmentListener:SignupFragmentListener?=null
     val repo=LoCATorRepo.getInstance()
+    var selectedCampus:String=""
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,13 +31,19 @@ class SignUpFragment:Fragment() {
         // Inflate the layout using the binding class
         binding = SignupFragLayoutBinding.inflate(inflater, container, false)
         // Return the root view of the inflated layout
+        binding?.selectCampus?.onItemSelectedListener =this
         return binding?.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
 
-            val campuses=repo.getAllCampuses()
+            val campus_list = repo.getAllCampuses()
+            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, campus_list)
+            binding!!.selectCampus.adapter = adapter
+
+            // on below line we are adding on item selected listener for spinner.
+
 
             binding!!.signUpButton.setOnClickListener {
                 val email = binding!!.emailEditText.text.toString()
@@ -42,7 +51,15 @@ class SignUpFragment:Fragment() {
                 val pwd2 = binding!!.confirmPasswordEditText.text.toString()
 
                 if (pwd.equals(pwd2)) {
-                    repo?.userSignUp(email, pwd, "BU")
+                    if(selectedCampus.equals("")){
+                        Toast.makeText(
+                            requireContext(),
+                            "Please select a campus.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
+                        repo?.userSignUp(email, pwd, selectedCampus)
+                    }
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -57,12 +74,7 @@ class SignUpFragment:Fragment() {
                 signupFragmentListener?.gotoLogin()
             }
         }
-        val campus_list = emptyList<String>()
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, campus_list)
-        binding!!.selectCampus.adapter = adapter
 
-        // on below line we are adding on item selected listener for spinner.
-        binding!!.selectCampus.onItemSelectedListener = SpinnerDetailActivity(this)
     }
 
     fun setSignupFragmentListener(listener:SignupFragmentListener?){
@@ -76,11 +88,25 @@ class SignUpFragment:Fragment() {
     }
 
     class SpinnerDetailActivity(fragment: Fragment) : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+        var selectedCampus:String=""
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             // TODO: change language of user in fragment
+            selectedCampus = parent?.getItemAtPosition(position).toString()
         }
         override fun onNothingSelected(parent: AdapterView<*>?) {
             // Code to execute when no item is selected (optional)
+            selectedCampus=""
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        selectedCampus = parent?.getItemAtPosition(position).toString()
+        Log.d("CAMPUS","selected:${selectedCampus}")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        selectedCampus=""
     }
 }
