@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -38,13 +39,33 @@ class SignUpFragment:Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
 
-            val campus_list = repo.getAllCampuses()
-            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, campus_list)
+            val campusList = repo.getAllCampuses().toMutableList()
+            campusList.add(0, "Choose Your Campus Here")
+            val adapter = object : ArrayAdapter<String>(requireContext(),R.layout.simple_spinner_item, campusList) {
+                override fun isEnabled(position: Int): Boolean {
+                    // Disable the first item from Spinner
+                    // First item will be used for hint
+                    return position != 0
+                }
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
+                    //set the color of first item in the drop down list to gray
+                    if(position == 0) {
+                        view.setTextColor(getResources().getColor(R.color.darker_gray))
+                    } else {
+                        //here it is possible to define color for other items by
+                        //view.setTextColor(Color.RED)
+                    }
+                    return view
+                }
+            }
             binding!!.selectCampus.adapter = adapter
 
             // on below line we are adding on item selected listener for spinner.
-
-
             binding!!.signUpButton.setOnClickListener {
                 val email = binding!!.emailEditText.text.toString()
                 val pwd = binding!!.passwordEditText.text.toString()
@@ -74,7 +95,6 @@ class SignUpFragment:Fragment(), AdapterView.OnItemSelectedListener {
                 signupFragmentListener?.gotoLogin()
             }
         }
-
     }
 
     fun setSignupFragmentListener(listener:SignupFragmentListener?){
@@ -90,7 +110,6 @@ class SignUpFragment:Fragment(), AdapterView.OnItemSelectedListener {
     class SpinnerDetailActivity(fragment: Fragment) : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         var selectedCampus:String=""
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            // TODO: change language of user in fragment
             selectedCampus = parent?.getItemAtPosition(position).toString()
         }
         override fun onNothingSelected(parent: AdapterView<*>?) {
