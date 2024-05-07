@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 
@@ -33,6 +34,9 @@ interface MainActivityListener{
     //fun startWorkManager()
 
     fun logOut()
+
+
+    fun restartWorkManager()
 
 }
 
@@ -53,6 +57,7 @@ interface SignupFragmentListener{
 class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListener,SignupFragmentListener {
     val TAG="MAIN"
     private val repo: LoCATorRepo=LoCATorRepo.getInstance()
+    lateinit var workId: UUID
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -205,6 +210,7 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
         val inputData = Data.Builder()
             .putStringArray("catIds", likedCats.toTypedArray())
             //.putString("uid", repo.getUser()?.uid)
+
             .build()
 
         val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(10,TimeUnit.SECONDS)
@@ -212,7 +218,16 @@ class MainActivity : AppCompatActivity(),MainActivityListener,LoginFragmentListe
             .setConstraints(constraints)
             .build()
 
+        workId = workRequest.id
+
         WorkManager.getInstance(this).enqueue(workRequest)
+    }
+
+    override fun restartWorkManager() {
+        WorkManager.getInstance(this).cancelWorkById(workId)
+
+        startWorkManager()
+        Log.d("NOTIF","work manager restarted")
     }
 
     private fun cancelWorkManager(){
